@@ -22,8 +22,8 @@ public abstract class Tile extends GridCell {
     public static final HashMap<String, Texture> textureMap = new HashMap<>();
 
     public void renderShapes(ShapeRenderer renderer){
-        renderer.setColor(Color.WHITE);
-       // renderer.rect(this.getX() * Tile.TILE_SIZE ,this.getY() * Tile.TILE_SIZE,TILE_SIZE,TILE_SIZE);
+        renderer.setColor(Color.GRAY);
+        renderer.rect(this.getX() * Tile.TILE_SIZE ,this.getY() * Tile.TILE_SIZE,TILE_SIZE,TILE_SIZE);
     }
 
     public void renderImages(SpriteBatch batch){

@@ -12,10 +12,9 @@ import me.jack.ld55.entity.ExitTile;
 import me.jack.ld55.entity.MobSpawner;
 import me.jack.ld55.entity.mob.BaseEnemy;
 import me.jack.ld55.entity.mob.Mob;
+import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.entity.tower.Tower;
-import me.jack.ld55.level.tile.GrassTile;
-import me.jack.ld55.level.tile.PathTile;
-import me.jack.ld55.level.tile.Tile;
+import me.jack.ld55.level.tile.*;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -23,14 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import me.jack.ld55.level.tile.VoidTile;
 import org.w3c.dom.css.Rect;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
 public class Level {
 
-    private Tile[][] tiles;
+    public Tile[][] tiles;
 
     private Tower[][] towers;
     private int w, h;
@@ -68,6 +66,18 @@ public class Level {
                         tiles[x][y] = new GrassTile(x,y);
                     } else if (val == 16720383) {
                         tiles[x][y] = new PathTile(x,y);
+                    }else if(val == -1224802049){
+                        tiles[x][y] = new VerticlePathTile(x,y);
+                    }else if(val == 16748799){
+                        tiles[x][y] = new MiddlePathTile(x,y);
+                    }else if(val == -16748801){
+                        tiles[x][y] = new GrassWithStones(x,y);
+                    }else if(val == -2621185){
+                        tiles[x][y] = new GrassWithFlowers(x,y);
+                    }else{
+                        if(val != 0)
+                        System.out.println(val);
+                        System.out.flush();
                     }
                 } else {
                     if (val ==1208025087) {
@@ -83,8 +93,10 @@ public class Level {
                         System.out.println("Exit at " + x + "," + y);
                         tiles[x][y] = new PathTile(x,y);
                     }else{
-                        if(x < 12 && y <12)
-                        tiles[x][y] = new VoidTile(x,y);
+                        if(x < 12 && y <12) {
+                          //  System.out.println(val);
+                            tiles[x][y] = new VoidTile(x, y);
+                        }
                     }
 
                 }
@@ -156,6 +168,7 @@ public class Level {
             if(e instanceof Mob){
                 if(((Mob) e).getHealth() <= 0){
                     removeEntity(e);
+                    this.spawnEntity(new Rune(e.getX(),e.getY()));
                 }
             }
         }
@@ -206,4 +219,12 @@ public class Level {
     public static int dist(Entity e, Tile t) {
         return (int) Point2D.distance(e.getX(), e.getY(), t.getX() * Tile.TILE_SIZE, t.getY() * Tile.TILE_SIZE);
     }
+    public Tile getTileAt(int x, int y){
+        try{
+            return tiles[x][y];
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 }
