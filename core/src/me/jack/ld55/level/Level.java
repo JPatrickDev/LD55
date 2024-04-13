@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.jack.ld55.state.InGameState;
 import org.w3c.dom.css.Rect;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
@@ -40,6 +41,8 @@ public class Level {
 
     public NavigationGrid<GridCell> pathfindingGrid;
     public AStarGridFinder<GridCell> finder = new AStarGridFinder(GridCell.class);
+
+    public int roundNum = 0;
     public Level(int w, int h) {
         tiles = new Tile[w][h];
         towers = new Tower[w][h];
@@ -50,6 +53,7 @@ public class Level {
         loadLevel("level1");
         shapeRenderer.setAutoShapeType(true);
         pathfindingGrid = new NavigationGrid<GridCell>(tiles);
+
     }
 
 
@@ -107,11 +111,13 @@ public class Level {
 
 
 
-    public void placeTower(Tower t){
+    public boolean placeTower(Tower t){
         if(towers[t.getX()/64][t.getY()/64] == null && tiles[t.getX()/64][t.getY()/64] instanceof GrassTile){
             towers[t.getX()/64][t.getY()/64] = t;
             entities.add(t);
+            return true;
         }
+        return false;
     }
 
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -150,8 +156,17 @@ public class Level {
         }
         shapeRenderer.end();
     }
+    int lastRoundNotified = -1;
+    public void update(InGameState parent){
 
-    public void update(){
+
+        if(!mobsRemaining() && remainingToSpawn == 0){
+
+            if(lastRoundNotified != roundNum) {
+                parent.notifyRoundEnd();
+                lastRoundNotified = roundNum;
+            }
+        }
         for(Entity s : entities){
             s.update(this);
         }
@@ -166,12 +181,16 @@ public class Level {
                     e.onCollide(en,this);
             }
             if(e instanceof Mob){
+
                 if(((Mob) e).getHealth() <= 0){
                     removeEntity(e);
                     this.spawnEntity(new Rune(e.getX(),e.getY()));
                 }
             }
         }
+
+
+
 
         entities.addAll(toSpawn);
 
@@ -182,9 +201,12 @@ public class Level {
     }
     List<Entity> toSpawn = new ArrayList<>();
     public void spawnMobAt(int x, int y) {
-        System.out.println("Spawning Mob at " +x + "," + y);
-        ExitTile exit = exits.get(new Random().nextInt(exits.size()));
-        spawnEntity(new BaseEnemy(x,y,(exit.getX() /Tile.TILE_SIZE),exit.getY() / Tile.TILE_SIZE ,this));
+      //  System.out.println("Spawning Mob at " +x + "," + y);
+        if(remainingToSpawn != 0) {
+            ExitTile exit = exits.get(new Random().nextInt(exits.size()));
+            spawnEntity(new BaseEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            remainingToSpawn--;
+        }
     }
 
     public void spawnEntity(Entity e){
@@ -197,6 +219,13 @@ public class Level {
         toRemove.add(e);
     }
 
+
+    public int remainingToSpawn = 0;
+    public void startRound(){
+        roundNum++;
+        remainingToSpawn = getAmountToSpawn();
+        System.out.println("Round: " + roundNum + ", Spawning " + remainingToSpawn + " Started");
+    }
     public Mob getRandomMobInRange(Entity tower, float range) {
         List<Mob> choices = new ArrayList<>();
         for(Entity e : entities){
@@ -211,7 +240,9 @@ public class Level {
         return choices.get(new Random().nextInt(choices.size()));
     }
 
-
+    public boolean mobsRemaining(){
+        return entities.stream().anyMatch(x -> x instanceof Mob);
+    }
     public static int dist(Entity o, Entity t) {
         return (int) Point2D.distance(o.getX(), o.getY(), t.getX(), t.getY());
     }
@@ -224,6 +255,14 @@ public class Level {
             return tiles[x][y];
         }catch (Exception e){
             return null;
+        }
+    }
+
+    public int getAmountToSpawn(){
+        if(roundNum <= 5){
+            return (int) (5 * Math.pow(5,((roundNum/5.0))));
+        }else{
+            return (int) (25*Math.pow(1.5,(roundNum/15.0)) - 3.5);
         }
     }
 

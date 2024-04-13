@@ -32,6 +32,5 @@ public class ExitTile extends Entity{
     public void onCollide(Entity with,Level parent) {
         super.onCollide(with,parent);
         parent.removeEntity(with);
-        System.out.println("Collide");
     }
 }

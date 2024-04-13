@@ -2,9 +2,9 @@ Game over when too many mobs get through
 
 
 Exp
-    - Mobs drop something when they die?
+    - Mobs drop something when they die?/
         - This then can be spent on card pieces?
-        - "Runes"?
+        - "Runes"?/
             - They float towards the nearest tower?
             - Just fade after a few seconds?
                 - With an animation this might be OK
@@ -15,6 +15,7 @@ Towers/Mobs should have sprites that are taller than 1 tile, if mobs/towers are 
 Rounds
 Next Round UI
     - Exp gathered can be spent on existing towers, or unlocking a new card
+        - Maybe the cards are auto-unlocked based on current round, so runes are just spent on cards
 Number of mobs per round increases, with some randomness added
 Every multiple of 3, a new mob type is introduced?
     - Speed/health differences
@@ -27,8 +28,17 @@ Mobs
 
 Tower Placement
     - Show range when placing/
-    - Show grid only when placing?
+        - Instead of just a circle, highlight the path tiles inside the circle?
+    - Show grid only when placing?/
 
 Level
     - Randomise stone placement?
-    -
+
+Cards
+    - Hovering over a card "flips" it, showing a more detailed description on the back
+    - Some cards upgrade existing towers
+        -- Applies to towers already placed
+
+Towers
+    - Ice Tower
+       - Freezes path tiles - Show visually which tiles are affected

@@ -28,7 +28,7 @@ public class MobSpawner extends Entity{
     long lastSpawn = 0;
     @Override
     public void update(Level parent) {
-        if(System.currentTimeMillis() - lastSpawn > 1000){
+        if(System.currentTimeMillis() - lastSpawn > 1000 && parent.remainingToSpawn > 0){
             parent.spawnMobAt(getX(),getY());
             lastSpawn = System.currentTimeMillis();
         }

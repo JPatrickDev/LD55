@@ -16,7 +16,6 @@ public class BaseEnemy extends Mob{
         super(x, y, 32,32);
         this.tx = targetX;
         this.ty = targetY;
-        System.out.println("Spawned: " + this.hashCode());
 
         path = new ArrayList<>(parent.finder.findPath(getX()/64,getY()/64,tx,ty,parent.pathfindingGrid));
         if(path != null && !path.isEmpty())
