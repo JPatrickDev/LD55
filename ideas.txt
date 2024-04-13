@@ -1,0 +1,12 @@
+Tower Defence?
+    - You summon towers
+    - Magic Theme to everything
+    - Real time
+    - Cards?
+        - Each tower is represented as a card
+        - End of each round you get X card pieces(Runes? Something more magicy)
+        - You can choose to spend the pieces on more of an existing card, or unlock a new tower type
+            - Maybe you get 1 free card when you unlock the new type, or it's V expensive to unlock new cards and it'll probably be better strat to just spam tier 1 towers
+    - You can cast spells(Or summon something...?)
+        - Temporarily slow down all mobs
+        -
