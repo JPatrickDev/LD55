@@ -7,6 +7,7 @@ Exp
         - "Runes"?
             - They float towards the nearest tower?
             - Just fade after a few seconds?
+                - With an animation this might be OK
 
 Towers/Mobs should have sprites that are taller than 1 tile, if mobs/towers are rendered in order of depth(If you render mobs/towers at the lowest Y values(closest to bottom of screen)
  first) it should give a sense of depth?
@@ -25,7 +26,7 @@ Mobs
     - Walking animations
 
 Tower Placement
-    - Show range when placing
+    - Show range when placing/
     - Show grid only when placing?
 
 Level

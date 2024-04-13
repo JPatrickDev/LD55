@@ -14,11 +14,11 @@ public class InGameState extends Screen {
 
     private Level currentLevel;
 
-    private Tower inHand = null;
+    public static Tower inHand = null;
     @Override
     public void show() {
         currentLevel = new Level(12,12); //10x10 level with 1 tile border for spawners/exits
-        inHand = new Tower(0,0);
+       // inHand = new Tower(0,0);
         shapeRenderer.setAutoShapeType(true);
     }
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -50,7 +50,11 @@ public class InGameState extends Screen {
             x /= 64;
             y /= 64;
             System.out.println("Clicked " + x + "," + y);
-            currentLevel.placeTower(new Tower(x*64,y*64));
+            currentLevel.placeTower(new Tower(x*64,y*64)); //TODO Copy in hand
+            inHand = null;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            inHand = new Tower(0,0);
         }
     }
     @Override
