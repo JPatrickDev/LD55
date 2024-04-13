@@ -10,28 +10,39 @@ import me.jack.ld55.entity.tower.Tower;
 import java.io.FileOutputStream;
 
 public class CardElement extends UIElement {
-    private Texture cardTexture = null;
+    private Texture cardTexture = null,smallTexture = null;
 
     private Tower tower;
 
 
-    int count = LD55Game.rand(4) + 1;
+    public int count = 1;
 
     public CardElement(int x, int y, int w, int h, Tower tower) {
         super(x, y, w, h);
         cardTexture = new Texture("cards/basetower.png");
+        smallTexture = new Texture("cards/smallcards.png");
         this.tower = tower;
     }
+
+    public boolean inCarouselMode = false;
 
     @Override
     public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch, int x, int y) {
       for(int i = 0; i != count;i++){
-          drawCardUI(shapeRenderer,batch,x - (i*8),y - i*8);
+          drawCardUI(shapeRenderer,batch,x,y - i*8);
       }
       font.draw(batch,"x" + count,x + getX() + getW() -(count*8) - 15,y + getY() + 5);
     }
 
     public void drawCardUI(ShapeRenderer shapeRenderer,SpriteBatch batch,int x,int y){
+        if(inCarouselMode){
+            batch.draw(smallTexture, x + getX(), y + getY());
+            tower.setX(x + getX() + (getW() / 2 - 32));
+            tower.setY(y + getY());
+            tower.drawImages(batch);
+
+            return;
+        }
         batch.draw(cardTexture, x + getX(), y + getY());
         tower.setX(x + getX() + (getW() / 2 - 32));
         tower.setY(y + getY() + 97);
@@ -54,5 +65,26 @@ public class CardElement extends UIElement {
 
     public Tower getTower() {
         return this.tower;
+    }
+
+    @Override
+    public int getH(){
+        if(inCarouselMode){
+            return smallTexture.getHeight() + count * 10;
+        } else
+        return  super.getH() + count * 10;
+    }
+
+
+    @Override
+    public void setX(int x) {
+        super.setX(x);
+        tower.setX(x);
+    }
+
+    @Override
+    public void setY(int y) {
+        super.setY(y);
+        tower.setY(y);
     }
 }

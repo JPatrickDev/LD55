@@ -10,10 +10,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class UIContainer {
 
-    private List<UIElement> elements;
+    public CopyOnWriteArrayList<UIElement> elements;
 
 
     private ShapeRenderer shapeRenderer;
@@ -31,7 +32,7 @@ public class UIContainer {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         spriteBatch = new SpriteBatch();
-        this.elements = new ArrayList<>();
+        this.elements = new CopyOnWriteArrayList<>();
     }
 
     public Texture background;
@@ -64,19 +65,25 @@ public class UIContainer {
 
     public void update(){
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-            System.out.println("Clicked");
+         //   System.out.println("Clicked");
             int mx = Gdx.input.getX();
             int my = Gdx.graphics.getHeight() -  Gdx.input.getY();
             for(UIElement e : elements){
-                System.out.println(e.getH());
+               // System.out.println(e.getH());
                 Rectangle box = new Rectangle(e.getX() + x, e.getY() + y,e.getW(),e.getH());
                 if(box.contains(mx,my)){
-                    System.out.println("UI Element clicked");
+                 //   System.out.println("UI Element clicked");
                     if(listener != null)
                         listener.onClick(e);
                 }
             }
         }
+    }
+
+    public void removeElement(UIElement clicked) {
+        elements.remove(clicked);
+
+
     }
 
     public interface ClickListener{

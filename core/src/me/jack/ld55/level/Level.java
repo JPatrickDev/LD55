@@ -27,6 +27,7 @@ import org.w3c.dom.css.Rect;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
+
 public class Level {
 
     public Tile[][] tiles;
@@ -43,6 +44,7 @@ public class Level {
     public AStarGridFinder<GridCell> finder = new AStarGridFinder(GridCell.class);
 
     public int roundNum = 0;
+
     public Level(int w, int h) {
         tiles = new Tile[w][h];
         towers = new Tower[w][h];
@@ -67,38 +69,38 @@ public class Level {
                 // System.out.println(val);
                 if (x >= 1 && x <= 10 && y >= 1 && y <= 10) {
                     if (val == 2134049023) {
-                        tiles[x][y] = new GrassTile(x,y);
+                        tiles[x][y] = new GrassTile(x, y);
                     } else if (val == 16720383) {
-                        tiles[x][y] = new PathTile(x,y);
-                    }else if(val == -1224802049){
-                        tiles[x][y] = new VerticlePathTile(x,y);
-                    }else if(val == 16748799){
-                        tiles[x][y] = new MiddlePathTile(x,y);
-                    }else if(val == -16748801){
-                        tiles[x][y] = new GrassWithStones(x,y);
-                    }else if(val == -2621185){
-                        tiles[x][y] = new GrassWithFlowers(x,y);
-                    }else{
-                        if(val != 0)
-                        System.out.println(val);
+                        tiles[x][y] = new PathTile(x, y);
+                    } else if (val == -1224802049) {
+                        tiles[x][y] = new VerticlePathTile(x, y);
+                    } else if (val == 16748799) {
+                        tiles[x][y] = new MiddlePathTile(x, y);
+                    } else if (val == -16748801) {
+                        tiles[x][y] = new GrassWithStones(x, y);
+                    } else if (val == -2621185) {
+                        tiles[x][y] = new GrassWithFlowers(x, y);
+                    } else {
+                        if (val != 0)
+                            System.out.println(val);
                         System.out.flush();
                     }
                 } else {
-                    if (val ==1208025087) {
-                        MobSpawner e  =  new MobSpawner((x) * Tile.TILE_SIZE,(y) * Tile.TILE_SIZE);
+                    if (val == 1208025087) {
+                        MobSpawner e = new MobSpawner((x) * Tile.TILE_SIZE, (y) * Tile.TILE_SIZE);
                         spawners.add(e);
                         entities.add(e);
                         System.out.println("Spawner at " + x + "," + y);
-                        tiles[x][y] = new PathTile(x,y);
-                    } else if (val == -16776961){
-                        ExitTile e = new ExitTile((x) * Tile.TILE_SIZE,(y) * Tile.TILE_SIZE);
+                        tiles[x][y] = new PathTile(x, y);
+                    } else if (val == -16776961) {
+                        ExitTile e = new ExitTile((x) * Tile.TILE_SIZE, (y) * Tile.TILE_SIZE);
                         exits.add(e);
                         entities.add(e);
                         System.out.println("Exit at " + x + "," + y);
-                        tiles[x][y] = new PathTile(x,y);
-                    }else{
-                        if(x < 12 && y <12) {
-                          //  System.out.println(val);
+                        tiles[x][y] = new PathTile(x, y);
+                    } else {
+                        if (x < 12 && y < 12) {
+                            //  System.out.println(val);
                             tiles[x][y] = new VoidTile(x, y);
                         }
                     }
@@ -110,12 +112,15 @@ public class Level {
     }
 
 
-
-    public boolean placeTower(Tower t){
-        if(towers[t.getX()/64][t.getY()/64] == null && tiles[t.getX()/64][t.getY()/64] instanceof GrassTile){
-            towers[t.getX()/64][t.getY()/64] = t;
-            entities.add(t);
-            return true;
+    public boolean placeTower(Tower t) {
+        try {
+            if (towers[t.getX() / 64][t.getY() / 64] == null && tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile) {
+                towers[t.getX() / 64][t.getY() / 64] = t;
+                entities.add(t);
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
         }
         return false;
     }
@@ -146,50 +151,50 @@ public class Level {
 
 
         batchRenderer.begin();
-        for(Entity e : entities){
+        for (Entity e : entities) {
             e.drawImages(batchRenderer);
         }
         batchRenderer.end();
         shapeRenderer.begin();
-        for(Entity e : entities){
+        for (Entity e : entities) {
             e.drawShapes(shapeRenderer);
         }
         shapeRenderer.end();
     }
+
     int lastRoundNotified = -1;
-    public void update(InGameState parent){
+
+    public void update(InGameState parent) {
 
 
-        if(!mobsRemaining() && remainingToSpawn == 0){
+        if (!mobsRemaining() && remainingToSpawn == 0) {
 
-            if(lastRoundNotified != roundNum) {
+            if (lastRoundNotified != roundNum) {
                 parent.notifyRoundEnd();
                 lastRoundNotified = roundNum;
             }
         }
-        for(Entity s : entities){
+        for (Entity s : entities) {
             s.update(this);
         }
 
-        for(Entity e : entities){
-            Rectangle r = new Rectangle(e.getX(),e.getY(),e.getW(),e.getH());
-            for(Entity en : entities){
-                if(en == e)
+        for (Entity e : entities) {
+            Rectangle r = new Rectangle(e.getX(), e.getY(), e.getW(), e.getH());
+            for (Entity en : entities) {
+                if (en == e)
                     continue;
-                Rectangle r2 = new Rectangle(en.getX(),en.getY(),en.getW(),en.getH());
-                if(r2.intersects(r))
-                    e.onCollide(en,this);
+                Rectangle r2 = new Rectangle(en.getX(), en.getY(), en.getW(), en.getH());
+                if (r2.intersects(r))
+                    e.onCollide(en, this);
             }
-            if(e instanceof Mob){
+            if (e instanceof Mob) {
 
-                if(((Mob) e).getHealth() <= 0){
+                if (((Mob) e).getHealth() <= 0) {
                     removeEntity(e);
-                    this.spawnEntity(new Rune(e.getX(),e.getY()));
+                    this.spawnEntity(new Rune(e.getX(), e.getY()));
                 }
             }
         }
-
-
 
 
         entities.addAll(toSpawn);
@@ -199,50 +204,59 @@ public class Level {
         toRemove.clear();
 
     }
+
     List<Entity> toSpawn = new ArrayList<>();
+
     public void spawnMobAt(int x, int y) {
-      //  System.out.println("Spawning Mob at " +x + "," + y);
-        if(remainingToSpawn != 0) {
+        //  System.out.println("Spawning Mob at " +x + "," + y);
+        if (remainingToSpawn != 0) {
             ExitTile exit = exits.get(new Random().nextInt(exits.size()));
             spawnEntity(new BaseEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
             remainingToSpawn--;
         }
     }
 
-    public void spawnEntity(Entity e){
+    public void spawnEntity(Entity e) {
         e.spawnTime = System.currentTimeMillis();
         toSpawn.add(e);
     }
 
     List<Entity> toRemove = new ArrayList<>();
-    public void removeEntity(Entity e){
+
+    public void removeEntity(Entity e) {
         toRemove.add(e);
     }
 
 
     public int remainingToSpawn = 0;
-    public void startRound(){
+
+    public void startRound() {
+        if(remainingToSpawn > 0){
+            return;
+        }
         roundNum++;
         remainingToSpawn = getAmountToSpawn();
         System.out.println("Round: " + roundNum + ", Spawning " + remainingToSpawn + " Started");
     }
+
     public Mob getRandomMobInRange(Entity tower, float range) {
         List<Mob> choices = new ArrayList<>();
-        for(Entity e : entities){
-            if((e instanceof Mob)){
-                if(dist(e,tower) <= range){
+        for (Entity e : entities) {
+            if ((e instanceof Mob)) {
+                if (dist(e, tower) <= range) {
                     choices.add((Mob) e);
                 }
             }
         }
-        if(choices.isEmpty())
+        if (choices.isEmpty())
             return null;
         return choices.get(new Random().nextInt(choices.size()));
     }
 
-    public boolean mobsRemaining(){
+    public boolean mobsRemaining() {
         return entities.stream().anyMatch(x -> x instanceof Mob);
     }
+
     public static int dist(Entity o, Entity t) {
         return (int) Point2D.distance(o.getX(), o.getY(), t.getX(), t.getY());
     }
@@ -250,19 +264,20 @@ public class Level {
     public static int dist(Entity e, Tile t) {
         return (int) Point2D.distance(e.getX(), e.getY(), t.getX() * Tile.TILE_SIZE, t.getY() * Tile.TILE_SIZE);
     }
-    public Tile getTileAt(int x, int y){
-        try{
+
+    public Tile getTileAt(int x, int y) {
+        try {
             return tiles[x][y];
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
-    public int getAmountToSpawn(){
-        if(roundNum <= 5){
-            return (int) (5 * Math.pow(5,((roundNum/5.0))));
-        }else{
-            return (int) (25*Math.pow(1.5,(roundNum/15.0)) - 3.5);
+    public int getAmountToSpawn() {
+        if (roundNum <= 5) {
+            return (int) (5 * Math.pow(5, ((roundNum / 5.0))));
+        } else {
+            return (int) (25 * Math.pow(1.5, (roundNum / 15.0)) - 3.5);
         }
     }
 
