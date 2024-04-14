@@ -25,4 +25,8 @@ public class SpiderEnemy extends BaseEnemy {
         animation.draw(batch,getX() + 16,getY() + 16,this.rotation);
     }
 
+    @Override
+    public float getMaxHealth() {
+        return 15f;
+    }
 }

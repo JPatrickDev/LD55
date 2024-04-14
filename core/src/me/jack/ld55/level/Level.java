@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import me.jack.ld55.LD55Game;
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.ExitTile;
 import me.jack.ld55.entity.MobSpawner;
-import me.jack.ld55.entity.mob.BaseEnemy;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.mob.SpiderEnemy;
+import me.jack.ld55.entity.mob.StoneGolemEnemy;
 import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.entity.rune.RuneShard;
 import me.jack.ld55.entity.tower.Tower;
@@ -19,7 +20,6 @@ import me.jack.ld55.level.tile.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -220,7 +220,11 @@ public class Level {
         //  System.out.println("Spawning Mob at " +x + "," + y);
         if (remainingToSpawn != 0) {
             ExitTile exit = exits.get(new Random().nextInt(exits.size()));
-            spawnEntity(new SpiderEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            if(LD55Game.rand(2)== 0){
+                spawnEntity(new StoneGolemEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            }else{
+                spawnEntity(new SpiderEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            }
             remainingToSpawn--;
         }
     }

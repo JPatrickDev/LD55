@@ -10,7 +10,7 @@ Exp
                 - With an animation this might be OK
 
 Towers/Mobs should have sprites that are taller than 1 tile, if mobs/towers are rendered in order of depth(If you render mobs/towers at the lowest Y values(closest to bottom of screen)
- first) it should give a sense of depth?
+ first) it should give a sense of depth?/
 
 Rounds
 Next Round UI/
@@ -24,11 +24,11 @@ Mobs
     - Some mobs can hurt towers?
         - Passive towers can counter this?
     - Difference sprites depending on direction they are moving/facing
-    - Walking animations
+    - Walking animations/
 
 Tower Placement
     - Show range when placing/
-        - Instead of just a circle, highlight the path tiles inside the circle?
+        - Instead of just a circle, highlight the path tiles inside the circle?/
     - Show grid only when placing?/
 
 Level
@@ -47,3 +47,7 @@ Cards
 Towers
     - Ice Tower/
        - Freezes path tiles - Show visually which tiles are affected/
+
+
+ Bugs:
+    - Ice tower can break movement if placed just before the final corner
