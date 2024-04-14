@@ -64,11 +64,7 @@ public abstract class Tower extends Entity {
     long lastShot = 0;
     @Override
     public void update(Level parent) {
-        Mob target = parent.getRandomMobInRange(this, range);
-        if (target != null && System.currentTimeMillis() - lastShot >= fireRate) {
-            parent.spawnEntity(new Projectile(getX(), getY(), 16, 16, target));
-            lastShot = System.currentTimeMillis();
-        }
+
     }
 
     public String getName() {

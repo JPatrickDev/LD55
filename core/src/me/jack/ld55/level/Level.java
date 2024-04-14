@@ -261,6 +261,20 @@ public class Level {
         return choices.get(new Random().nextInt(choices.size()));
     }
 
+    public Mob getRandomMobInRange(int x,int y, float range) {
+        List<Mob> choices = new ArrayList<>();
+        for (Entity e : entities) {
+            if ((e instanceof Mob)) {
+                if (dist(e, x,y) <= range) {
+                    choices.add((Mob) e);
+                }
+            }
+        }
+        if (choices.isEmpty())
+            return null;
+        return choices.get(new Random().nextInt(choices.size()));
+    }
+
     public boolean mobsRemaining() {
         return entities.stream().anyMatch(x -> x instanceof Mob);
     }
@@ -271,6 +285,10 @@ public class Level {
 
     public static int dist(Entity e, Tile t) {
         return (int) Point2D.distance(e.getX(), e.getY(), t.getX() * Tile.TILE_SIZE, t.getY() * Tile.TILE_SIZE);
+    }
+
+    public static int dist(Entity e, int x, int y) {
+        return (int) Point2D.distance(e.getX(), e.getY(),x,y);
     }
 
     public Tile getTileAt(int x, int y) {
@@ -326,6 +344,19 @@ public class Level {
         if (value < min) return min;
         if (value > max) return max;
         return value;
+    }
+
+
+    public Mob getMobAt(Tile t){
+        for(Entity e : this.entities){
+            if(!(e instanceof Mob)){
+                continue;
+            }
+            if(e.getTileX() == t.getX() && e.getTileY() == t.getY()){
+                return (Mob) e;
+            }
+        }
+        return null;
     }
 
 }

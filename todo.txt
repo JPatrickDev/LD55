@@ -6,14 +6,14 @@ Exp
         - This then can be spent on card pieces?
         - "Runes"?/
             - They float towards the nearest tower?
-            - Just fade after a few seconds?
+            - Just fade after a few seconds?/
                 - With an animation this might be OK
 
 Towers/Mobs should have sprites that are taller than 1 tile, if mobs/towers are rendered in order of depth(If you render mobs/towers at the lowest Y values(closest to bottom of screen)
  first) it should give a sense of depth?
 
 Rounds
-Next Round UI
+Next Round UI/
     - Exp gathered can be spent on existing towers, or unlocking a new card
         - Maybe the cards are auto-unlocked based on current round, so runes are just spent on cards
 Number of mobs per round increases, with some randomness added
@@ -40,5 +40,5 @@ Cards
         -- Applies to towers already placed
 
 Towers
-    - Ice Tower
-       - Freezes path tiles - Show visually which tiles are affected
+    - Ice Tower/
+       - Freezes path tiles - Show visually which tiles are affected/

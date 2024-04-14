@@ -3,6 +3,7 @@ package me.jack.ld55.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import me.jack.ld55.level.Level;
+import me.jack.ld55.level.tile.Tile;
 
 public abstract class Entity {
 
@@ -63,5 +64,14 @@ public abstract class Entity {
 
     public void onCollide(Entity with,Level parent){
 
+    }
+
+
+    public int getTileX(){
+        return getX() / Tile.TILE_SIZE;
+    }
+
+    public int getTileY(){
+        return getY() / Tile.TILE_SIZE;
     }
 }
