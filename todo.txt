@@ -33,11 +33,16 @@ Tower Placement
 
 Level
     - Randomise stone placement?
+    - At least three levels
+    - Level selection screen
+        - Render preview
 
 Cards
     - Hovering over a card "flips" it, showing a more detailed description on the back
     - Some cards upgrade existing towers
         -- Applies to towers already placed
+    - Unwanted cards can be discarded
+        - Possible tactical element of keeping a good but expensive card vs discarding and getting a new one you can currently afford
 
 Towers
     - Ice Tower/

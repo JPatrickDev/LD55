@@ -10,6 +10,7 @@ import me.jack.ld55.entity.ExitTile;
 import me.jack.ld55.entity.MobSpawner;
 import me.jack.ld55.entity.mob.BaseEnemy;
 import me.jack.ld55.entity.mob.Mob;
+import me.jack.ld55.entity.mob.SpiderEnemy;
 import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.entity.rune.RuneShard;
 import me.jack.ld55.entity.tower.Tower;
@@ -18,6 +19,7 @@ import me.jack.ld55.level.tile.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -152,12 +154,14 @@ public class Level {
 
 
         batchRenderer.begin();
-        for (Entity e : entities) {
+        List<Entity> entitiesSort = new ArrayList<>(entities);
+        entitiesSort.sort((o1, o2) -> Integer.compare(o2.getTileY(), o1.getTileY()));
+        for (Entity e : entitiesSort) {
             e.drawImages(batchRenderer);
         }
         batchRenderer.end();
         shapeRenderer.begin();
-        for (Entity e : entities) {
+        for (Entity e : entitiesSort) {
             e.drawShapes(shapeRenderer);
         }
         shapeRenderer.end();
@@ -216,7 +220,7 @@ public class Level {
         //  System.out.println("Spawning Mob at " +x + "," + y);
         if (remainingToSpawn != 0) {
             ExitTile exit = exits.get(new Random().nextInt(exits.size()));
-            spawnEntity(new BaseEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            spawnEntity(new SpiderEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
             remainingToSpawn--;
         }
     }

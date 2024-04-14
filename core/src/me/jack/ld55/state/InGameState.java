@@ -124,6 +124,9 @@ public class InGameState extends Screen {
     }
 
     private boolean noMoreAffordableCards() {
+        if(this.roundEndDialog == null){
+            return true;
+        }
         for(UIElement e : this.roundEndDialog.elements) {
             if(e instanceof  CardElement){
                 if(RuneCollectionElement.canAfford((CardElement) e)){

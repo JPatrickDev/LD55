@@ -10,18 +10,20 @@ import org.xguzm.pathfinding.grid.GridCell;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseEnemy extends Mob{
-    int tx,ty;
-    public BaseEnemy(int x, int y, int targetX,int targetY, Level parent) {
-        super(x, y, 32,32);
+public abstract class BaseEnemy extends Mob {
+    int tx, ty;
+
+    public BaseEnemy(int x, int y, int targetX, int targetY, Level parent) {
+        super(x, y, 32, 32);
         this.tx = targetX;
         this.ty = targetY;
 
-        path = new ArrayList<>(parent.finder.findPath(getX()/64,getY()/64,tx,ty,parent.pathfindingGrid));
-        if(path != null && !path.isEmpty())
+        path = new ArrayList<>(parent.finder.findPath(getX() / 64, getY() / 64, tx, ty, parent.pathfindingGrid));
+        if (path != null && !path.isEmpty())
             currentTarget = path.get(pathPos);
     }
 
+    int rotation = 0;
     List<GridCell> path = null;
     int pathPos = 0;
     GridCell currentTarget;
@@ -29,15 +31,15 @@ public class BaseEnemy extends Mob{
     @Override
     public void drawShapes(ShapeRenderer renderer) {
         renderer.setColor(Color.WHITE);
-        renderer.rect(getX() + 16,getY() + 16,getW(),getH());
-        if(path != null){
-            for(GridCell c : path){
-                if(c != currentTarget)
-                renderer.setColor(Color.PINK);
+        //   renderer.rect(getX() + 16,getY() + 16,getW(),getH());
+        if (path != null) {
+            for (GridCell c : path) {
+                if (c != currentTarget)
+                    renderer.setColor(Color.PINK);
                 else
                     renderer.setColor(Color.RED);
-             //   renderer.rect(c.getX() * Tile.TILE_SIZE,c.getY() * Tile.TILE_SIZE, Tile.TILE_SIZE,Tile.TILE_SIZE);
-             //   renderer.rect(c.getX() * Tile.TILE_SIZE+ 16,c.getY() * Tile.TILE_SIZE +16,32,32);
+                //   renderer.rect(c.getX() * Tile.TILE_SIZE,c.getY() * Tile.TILE_SIZE, Tile.TILE_SIZE,Tile.TILE_SIZE);
+                //   renderer.rect(c.getX() * Tile.TILE_SIZE+ 16,c.getY() * Tile.TILE_SIZE +16,32,32);
             }
         }
     }
@@ -51,30 +53,45 @@ public class BaseEnemy extends Mob{
     public void update(Level parent) {
 
         int oldSpeed = moveSpeed;
-        if(parent.getTileAt(getX()/Tile.TILE_SIZE,getY() / Tile.TILE_SIZE).freeze){
-            moveSpeed /=2;
+        if (parent.getTileAt(getX() / Tile.TILE_SIZE, getY() / Tile.TILE_SIZE).freeze) {
+            moveSpeed /= 2;
         }
-        if(currentTarget != null){
-            if(currentTarget.getX() * Tile.TILE_SIZE > this.getX()) {
-                move(moveSpeed,0);
-            } else if(currentTarget.getX() * Tile.TILE_SIZE < this.getX())
-                move(-moveSpeed,0);
-            else if(currentTarget.getY() * Tile.TILE_SIZE > this.getY())
-                move(0,moveSpeed);
-            else if(currentTarget.getY() * Tile.TILE_SIZE < this.getY())
-                move(0,-moveSpeed);
+        if (currentTarget != null) {
+            if (currentTarget.getX() * Tile.TILE_SIZE > this.getX()) {
+                move(moveSpeed, 0);
+            } else if (currentTarget.getX() * Tile.TILE_SIZE < this.getX())
+                move(-moveSpeed, 0);
+            else if (currentTarget.getY() * Tile.TILE_SIZE > this.getY())
+                move(0, moveSpeed);
+            else if (currentTarget.getY() * Tile.TILE_SIZE < this.getY())
+                move(0, -moveSpeed);
             else {
                 pathPos++;
-                if(pathPos >= path.size()){
+                if (pathPos >= path.size()) {
                     pathPos = 0;
                     path = null;
                     currentTarget = null;
-                }else {
+                } else {
                     currentTarget = path.get(pathPos);
                 }
             }
         }
         moveSpeed = oldSpeed;
+    }
+
+    @Override
+    public void move(int x, int y) {
+        super.move(x, y);
+        if (x > 0) {
+            rotation = 0;
+        } else if (x < 0) {
+            rotation = 180;
+        }
+        if (y > 0) {
+            rotation = 90;
+        } else if (y < 0) {
+            rotation = 270;
+        }
     }
 
     @Override
