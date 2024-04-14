@@ -116,6 +116,7 @@ public class Level {
             if (towers[t.getX() / 64][t.getY() / 64] == null && tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile) {
                 towers[t.getX() / 64][t.getY() / 64] = t;
                 entities.add(t);
+                t.onSpawn(this);
                 return true;
             }
         } catch (Exception e) {
@@ -123,6 +124,7 @@ public class Level {
         }
         return false;
     }
+
 
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     SpriteBatch batchRenderer = new SpriteBatch();

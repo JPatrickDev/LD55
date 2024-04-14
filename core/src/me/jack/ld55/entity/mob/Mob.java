@@ -6,6 +6,7 @@ public abstract class Mob extends Entity {
 
     private float health;
 
+    int moveSpeed = 4;
     public Mob(int x, int y, int w, int h) {
         super(x, y, w, h);
         health = getMaxHealth();

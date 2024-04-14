@@ -24,10 +24,17 @@ public abstract class Tile extends GridCell {
 
     public static final HashMap<String, Texture> textureMap = new HashMap<>();
 
+    public boolean freeze = false;
     public void renderShapes(ShapeRenderer renderer){
         if(InGameState.inHand != null && !(this instanceof VoidTile)) {
             renderer.setColor(Color.GRAY);
             renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        }
+        if(freeze && false){
+            renderer.setColor(Color.BLUE);
+            renderer.set(ShapeRenderer.ShapeType.Filled);
+            renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            renderer.set(ShapeRenderer.ShapeType.Line);
         }
         if(highlight){
             renderer.setColor(new Color(0x00FF0000));
@@ -36,10 +43,17 @@ public abstract class Tile extends GridCell {
             renderer.set(ShapeRenderer.ShapeType.Line);
             highlight = false;
         }
+
     }
 
     public void renderImages(SpriteBatch batch){
-        batch.draw(textureMap.get(getTexturePath()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
+         if(this.freeze && this instanceof PathTile){
+             batch.draw(textureMap.get(((PathTile)this).getFrozenTexture()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
+
+         }else{
+             batch.draw(textureMap.get(getTexturePath()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
+
+         }
     }
 
     public abstract String getTexturePath();

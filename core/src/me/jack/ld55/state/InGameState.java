@@ -105,7 +105,7 @@ public class InGameState extends Screen {
                 //  hideRoundEndDialog();
                 //  currentLevel.startRound();
             }else if(clicked instanceof TextAreaElement){
-                if(sidebar.hasCardsInHand() || noMoreAffordableCards()) {
+                if(sidebar.hasCardsInHand() || noMoreAffordableCards() || true) {
                     if (((TextAreaElement) clicked).text.contains("Place Towers")) {
                         hideRoundEndDialog();
                     } else if (((TextAreaElement) clicked).text.startsWith("Start Round")) {

@@ -76,4 +76,9 @@ public abstract class Tower extends Entity {
     }
 
     public abstract Tower clone();
+
+
+    public void onSpawn(Level level){
+
+    }
 }

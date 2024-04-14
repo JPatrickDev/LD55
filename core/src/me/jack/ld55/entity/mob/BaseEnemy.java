@@ -50,27 +50,31 @@ public class BaseEnemy extends Mob{
     @Override
     public void update(Level parent) {
 
-
+        int oldSpeed = moveSpeed;
+        if(parent.getTileAt(getX()/Tile.TILE_SIZE,getY() / Tile.TILE_SIZE).freeze){
+            moveSpeed /=2;
+        }
         if(currentTarget != null){
             if(currentTarget.getX() * Tile.TILE_SIZE > this.getX()) {
-                move(4,0);
+                move(moveSpeed,0);
             } else if(currentTarget.getX() * Tile.TILE_SIZE < this.getX())
-                move(-4,0);
+                move(-moveSpeed,0);
             else if(currentTarget.getY() * Tile.TILE_SIZE > this.getY())
-                move(0,4);
+                move(0,moveSpeed);
             else if(currentTarget.getY() * Tile.TILE_SIZE < this.getY())
-                move(0,-4);
+                move(0,-moveSpeed);
             else {
                 pathPos++;
                 if(pathPos >= path.size()){
                     pathPos = 0;
                     path = null;
                     currentTarget = null;
-                    return;
+                }else {
+                    currentTarget = path.get(pathPos);
                 }
-                currentTarget = path.get(pathPos);
             }
-            }
+        }
+        moveSpeed = oldSpeed;
     }
 
     @Override
