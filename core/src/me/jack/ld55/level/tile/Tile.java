@@ -13,6 +13,8 @@ public abstract class Tile extends GridCell {
 
     public static final int TILE_SIZE = 64;
 
+
+    public boolean highlight = false;
     public Tile(int x,int y){
         super(x,y);
         if(!textureMap.containsKey(getTexturePath())){
@@ -26,6 +28,13 @@ public abstract class Tile extends GridCell {
         if(InGameState.inHand != null && !(this instanceof VoidTile)) {
             renderer.setColor(Color.GRAY);
             renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        }
+        if(highlight){
+            renderer.setColor(new Color(0x00FF0000));
+            renderer.set(ShapeRenderer.ShapeType.Filled);
+            renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            renderer.set(ShapeRenderer.ShapeType.Line);
+            highlight = false;
         }
     }
 

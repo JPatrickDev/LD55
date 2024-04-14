@@ -3,6 +3,7 @@ package me.jack.ld55.state;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -20,6 +21,7 @@ import me.jack.ld55.ui.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -60,6 +62,7 @@ public class InGameState extends Screen {
                 }
             }
         });
+        sidebar.addElement(new RuneCollectionElement(0,210,300,400));
     }
 
 
@@ -79,10 +82,6 @@ public class InGameState extends Screen {
         el = new CardElement(320, 280, 150, 200, new IceTower(0, 0));
         el.count = LD55Game.rand(4) + 1;
         cards.addElement(el);
-        if (currentLevel.roundNum != 0)
-            cards.addElement(new TextAreaElement(150, 500, 512, 100, "Round " + currentLevel.roundNum + " Completed"));
-        if (currentLevel.roundNum == 0)
-            cards.addElement(new TextAreaElement(150, 500, 512, 100, "Game Starting"));
 
 
         if (currentLevel.roundNum != 0)
@@ -93,20 +92,46 @@ public class InGameState extends Screen {
             if (clicked instanceof CardElement) {
                 CardElement e = new CardElement(0, 0, 150, 300, ((CardElement) clicked).getTower().clone());
                 e.count = ((CardElement) clicked).count;
-                sidebar.addCard(e);
-                cards.removeElement(clicked);
-                if(cards.elements.stream().filter(x -> x instanceof CardElement).count() == 0){
-                    System.out.println("No more cards?");
-                    hideRoundEndDialog();
-                }
+                e.cost = new HashMap<>();
+                if(RuneCollectionElement.buy((CardElement) clicked)) {
+                    sidebar.addCard(e);
+                    cards.removeElement(clicked);
+                    if (cards.elements.stream().noneMatch(x -> x instanceof CardElement)) {
+                        hideRoundEndDialog();
+                    }
 
+                }
                 //     inHand = ((CardElement) clicked).getTower().clone();
                 //  hideRoundEndDialog();
                 //  currentLevel.startRound();
+            }else if(clicked instanceof TextAreaElement){
+                if(sidebar.hasCardsInHand() || noMoreAffordableCards()) {
+                    if (((TextAreaElement) clicked).text.contains("Place Towers")) {
+                        hideRoundEndDialog();
+                    } else if (((TextAreaElement) clicked).text.startsWith("Start Round")) {
+                        hideRoundEndDialog();
+                        currentLevel.startRound();
+                    }
+                }
+                System.out.println(((TextAreaElement) clicked).text);
             }
         };
-        cards.addElement(new TextAreaElement(150, 200, 512, 100, "Start Round " + (currentLevel.roundNum + 1)));
+
+        cards.addElement(new TextAreaElement(150, 50, 512, 50, "Start Round " + (currentLevel.roundNum + 1)));
+        cards.addElement(new TextAreaElement(150, 25, 512, 50, "Place Towers "));
+
         roundEndDialog = cards;
+    }
+
+    private boolean noMoreAffordableCards() {
+        for(UIElement e : this.roundEndDialog.elements) {
+            if(e instanceof  CardElement){
+                if(RuneCollectionElement.canAfford((CardElement) e)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void hideRoundEndDialog() {
@@ -141,10 +166,10 @@ public class InGameState extends Screen {
             inHand.setX(x * 64);
             inHand.setY(y * 64);
 
-            inHand.drawAsPlacing(shapeRenderer, batchRenderer, currentLevel.getTileAt(x, y) instanceof GrassTile);
+            inHand.drawAsPlacing(shapeRenderer, batchRenderer, currentLevel.getTileAt(x, y) instanceof GrassTile,currentLevel);
 
         } else {
-            if (roundEndDialog == null && currentLevel.remainingToSpawn == 0) {
+            if (roundEndDialog == null && currentLevel.remainingToSpawn == 0 && !currentLevel.mobsRemaining()) {
                 Rectangle r = new Rectangle(300,300,350,30);
                 font.draw(batchRenderer, "START NEXT ROUND", 300, 300);
                 int x = Gdx.input.getX();
@@ -176,6 +201,10 @@ public class InGameState extends Screen {
         }
         if (roundEndDialog != null)
             roundEndDialog.update();
+
+        if(roundEndDialog != null && noMoreAffordableCards()){
+            hideRoundEndDialog();
+        }
     }
 
     @Override

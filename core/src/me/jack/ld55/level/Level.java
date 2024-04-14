@@ -1,11 +1,9 @@
 package me.jack.ld55.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.ExitTile;
@@ -13,6 +11,7 @@ import me.jack.ld55.entity.MobSpawner;
 import me.jack.ld55.entity.mob.BaseEnemy;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.rune.Rune;
+import me.jack.ld55.entity.rune.RuneShard;
 import me.jack.ld55.entity.tower.Tower;
 import me.jack.ld55.level.tile.*;
 
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Random;
 
 import me.jack.ld55.state.InGameState;
-import org.w3c.dom.css.Rect;
+import me.jack.ld55.ui.RuneCollectionElement;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
@@ -191,7 +190,11 @@ public class Level {
 
                 if (((Mob) e).getHealth() <= 0) {
                     removeEntity(e);
-                    this.spawnEntity(new Rune(e.getX(), e.getY()));
+                    RuneShard ru = new RuneShard(e.getX(), e.getY());
+                    if(roundNum < 3){
+                        ru.runeType = Rune.RED;
+                    }
+                    this.spawnEntity(ru);
                 }
             }
         }
@@ -225,6 +228,9 @@ public class Level {
 
     public void removeEntity(Entity e) {
         toRemove.add(e);
+        if(e instanceof  RuneShard){
+            RuneCollectionElement.instance.addRune(((RuneShard)e).getRuneType(),1);
+        }
     }
 
 
@@ -279,6 +285,45 @@ public class Level {
         } else {
             return (int) (25 * Math.pow(1.5, (roundNum / 15.0)) - 3.5);
         }
+    }
+
+    public List<Tile> getTilesInRadius(int x, int y, float range) {
+        ArrayList<Tile> result = new ArrayList<>();
+
+        for(Tile[] t : tiles){
+            for(Tile tile : t){
+                Rectangle r = new Rectangle(tile.getX() * Tile.TILE_SIZE,tile.getY() * Tile.TILE_SIZE,Tile.TILE_SIZE,Tile.TILE_SIZE);
+                if(circleIntersectsRectangle(x,y, (int) range,r)){
+                    System.out.println("Found " + tile);
+                    result.add(tile);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+
+
+    public static boolean circleIntersectsRectangle(int cx, int cy, int r, Rectangle rect) {
+        // Finding the closest point on the rectangle to the circle's center
+        int closestX = clamp(cx, rect.x, rect.x + rect.width);
+        int closestY = clamp(cy, rect.y, rect.y + rect.height);
+
+        // Calculating the distance from the closest point to the circle's center
+        int distanceX = cx - closestX;
+        int distanceY = cy - closestY;
+        int distanceSquared = distanceX * distanceX + distanceY * distanceY;
+
+        // The circle intersects if the squared distance is less than the squared radius
+        return distanceSquared <= r * r;
+    }
+
+    private static int clamp(int value, int min, int max) {
+        if (value < min) return min;
+        if (value > max) return max;
+        return value;
     }
 
 }

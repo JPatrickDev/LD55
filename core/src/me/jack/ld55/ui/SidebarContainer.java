@@ -23,4 +23,8 @@ public class SidebarContainer extends UIContainer{
     public void setCardSelectionListener(UIContainer.ClickListener listener){
         cardCarousel.setCardClickListener(listener);
     }
+
+    public boolean hasCardsInHand() {
+        return !cardCarousel.elements.stream().noneMatch(x-> x instanceof CardElement);
+    }
 }

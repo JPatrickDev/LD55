@@ -10,7 +10,11 @@ import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.projectile.Projectile;
 import me.jack.ld55.level.Level;
+import me.jack.ld55.level.tile.PathTile;
 import me.jack.ld55.level.tile.Tile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Tower extends Entity {
 
@@ -38,12 +42,16 @@ public abstract class Tower extends Entity {
       //  renderer.set(ShapeRenderer.ShapeType.Line);
     }
 
-    public void drawAsPlacing(ShapeRenderer renderer, SpriteBatch batch,boolean canPlace){
+    public void drawAsPlacing(ShapeRenderer renderer, SpriteBatch batch,boolean canPlace, Level parent){
         if(canPlace){
             renderer.set(ShapeRenderer.ShapeType.Line);
             renderer.circle(getX() + 32, getY() + 32, range);
             drawShapes(renderer);
             drawImages(batch);
+            List<Tile> pathsInRange = parent.getTilesInRadius(getX() + 32,getY() + 32,range - 4).stream().filter(x -> x instanceof PathTile).collect(Collectors.toList());
+            for(Tile t : pathsInRange){
+                t.highlight = true;
+            }
         }else{
 
         }
