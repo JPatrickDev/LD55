@@ -44,8 +44,8 @@ public abstract class Tower extends Entity {
 
     public void drawAsPlacing(ShapeRenderer renderer, SpriteBatch batch,boolean canPlace, Level parent){
         if(canPlace){
-            renderer.set(ShapeRenderer.ShapeType.Line);
-            renderer.circle(getX() + 32, getY() + 32, range);
+         //   renderer.set(ShapeRenderer.ShapeType.Line);
+         //   renderer.circle(getX() + 32, getY() + 32, range);
             drawShapes(renderer);
             drawImages(batch);
             List<Tile> pathsInRange = parent.getTilesInRadius(getX() + 32,getY() + 32,range - 4).stream().filter(x -> x instanceof PathTile).collect(Collectors.toList());

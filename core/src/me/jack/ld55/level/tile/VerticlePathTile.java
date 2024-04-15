@@ -13,4 +13,8 @@ public class VerticlePathTile extends PathTile{
     public String getFrozenTexture(){
         return "tiles/frozenpathup.png";
     }
+
+    public String getHighlightTexture() {
+        return "tiles/highlightpathup.png";
+    }
 }

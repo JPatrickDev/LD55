@@ -30,29 +30,18 @@ public abstract class Tile extends GridCell {
             renderer.setColor(Color.GRAY);
             renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
         }
-        if(freeze && false){
-            renderer.setColor(Color.BLUE);
-            renderer.set(ShapeRenderer.ShapeType.Filled);
-            renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            renderer.set(ShapeRenderer.ShapeType.Line);
-        }
-        if(highlight){
-            renderer.setColor(new Color(0x00FF0000));
-            renderer.set(ShapeRenderer.ShapeType.Filled);
-            renderer.rect(this.getX() * Tile.TILE_SIZE, this.getY() * Tile.TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            renderer.set(ShapeRenderer.ShapeType.Line);
-            highlight = false;
-        }
+
 
     }
 
     public void renderImages(SpriteBatch batch){
          if(this.freeze && this instanceof PathTile){
              batch.draw(textureMap.get(((PathTile)this).getFrozenTexture()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
-
+         }else if(this.highlight && this instanceof PathTile){
+             batch.draw(textureMap.get(((PathTile)this).getHighlightTexture()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
+             highlight = false;
          }else{
              batch.draw(textureMap.get(getTexturePath()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
-
          }
     }
 

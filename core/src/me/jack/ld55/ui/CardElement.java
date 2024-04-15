@@ -122,9 +122,10 @@ public class CardElement extends UIElement {
         }
 
 
-        if (!RuneCollectionElement.canAfford(this))
+        if (!RuneCollectionElement.canAfford(this) && !inCarouselMode)
             batch.draw(lockedTexture, x + getX(), y + getY());
-        countDisplay.draw(shapeRenderer, batch, getX() + x, getY() + y);
+        if (!inCarouselMode)
+            countDisplay.draw(shapeRenderer, batch, getX() + x, getY() + y);
     }
 
     public void drawCardUI(ShapeRenderer shapeRenderer, SpriteBatch batch, int x, int y) {

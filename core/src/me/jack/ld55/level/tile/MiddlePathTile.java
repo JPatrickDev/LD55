@@ -16,4 +16,8 @@ public class MiddlePathTile extends PathTile{
     public String getFrozenTexture(){
         return "tiles/frozenpathmiddle.png";
     }
+
+    public String getHighlightTexture() {
+        return "tiles/highlightpathmiddle.png";
+    }
 }

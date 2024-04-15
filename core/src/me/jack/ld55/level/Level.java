@@ -116,8 +116,8 @@ public class Level {
 
     public boolean placeTower(Tower t) {
         try {
-            if (towers[t.getX() / 64][t.getY() / 64] == null && (tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile
-                  || (tiles[t.getX() / 64][t.getY() / 64] instanceof PathTile && t.type == TowerTypeEnum.SPELL)
+            if (towers[t.getX() / 64][t.getY() / 64] == null && ((tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile && t.type != TowerTypeEnum.SPELL)
+                    || (tiles[t.getX() / 64][t.getY() / 64] instanceof PathTile && t.type == TowerTypeEnum.SPELL)
             )) {
                 towers[t.getX() / 64][t.getY() / 64] = t;
                 entities.add(t);
@@ -200,7 +200,7 @@ public class Level {
                 if (((Mob) e).getHealth() <= 0) {
                     removeEntity(e);
                     RuneShard ru = new RuneShard(e.getX(), e.getY());
-                    if(roundNum < 3){
+                    if (roundNum < 3) {
                         ru.runeType = Rune.RED;
                     }
                     this.spawnEntity(ru);
@@ -223,9 +223,9 @@ public class Level {
         //  System.out.println("Spawning Mob at " +x + "," + y);
         if (remainingToSpawn != 0) {
             ExitTile exit = exits.get(new Random().nextInt(exits.size()));
-            if(LD55Game.rand(2)== 0 || roundNum <= 3){
+            if (LD55Game.rand(2) == 0 || roundNum <= 3) {
                 spawnEntity(new StoneGolemEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
-            }else{
+            } else {
                 spawnEntity(new SpiderEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
             }
             remainingToSpawn--;
@@ -241,22 +241,22 @@ public class Level {
 
     public void removeEntity(Entity e) {
         toRemove.add(e);
-        if(e instanceof  RuneShard){
-            RuneCollectionElement.instance.addRune(((RuneShard)e).getRuneType(),1);
+        if (e instanceof RuneShard) {
+            RuneCollectionElement.instance.addRune(((RuneShard) e).getRuneType(), 1);
         }
-        if(e instanceof Tower){
+        if (e instanceof Tower) {
             towers[e.getTileX()][e.getTileY()] = null;
         }
     }
 
 
     public int remainingToSpawn = 0;
-    public int mobsInRound   = 0;
+    public int mobsInRound = 0;
 
     public int livesRemaining = 10;
 
     public void startRound() {
-        if(remainingToSpawn > 0){
+        if (remainingToSpawn > 0) {
             return;
         }
         roundNum++;
@@ -279,11 +279,11 @@ public class Level {
         return choices.get(new Random().nextInt(choices.size()));
     }
 
-    public Mob getRandomMobInRange(int x,int y, float range) {
+    public Mob getRandomMobInRange(int x, int y, float range) {
         List<Mob> choices = new ArrayList<>();
         for (Entity e : entities) {
             if ((e instanceof Mob)) {
-                if (dist(e, x,y) <= range) {
+                if (dist(e, x, y) <= range) {
                     choices.add((Mob) e);
                 }
             }
@@ -297,9 +297,10 @@ public class Level {
         return entities.stream().anyMatch(x -> x instanceof Mob);
     }
 
-    public int mobCountRemaining(){
+    public int mobCountRemaining() {
         return (int) entities.stream().filter(x -> x instanceof Mob).count();
     }
+
     public static int dist(Entity o, Entity t) {
         return (int) Point2D.distance(o.getX(), o.getY(), t.getX(), t.getY());
     }
@@ -309,7 +310,7 @@ public class Level {
     }
 
     public static int dist(Entity e, int x, int y) {
-        return (int) Point2D.distance(e.getX(), e.getY(),x,y);
+        return (int) Point2D.distance(e.getX(), e.getY(), x, y);
     }
 
     public Tile getTileAt(int x, int y) {
@@ -331,10 +332,10 @@ public class Level {
     public List<Tile> getTilesInRadius(int x, int y, float range) {
         ArrayList<Tile> result = new ArrayList<>();
 
-        for(Tile[] t : tiles){
-            for(Tile tile : t){
-                Rectangle r = new Rectangle(tile.getX() * Tile.TILE_SIZE,tile.getY() * Tile.TILE_SIZE,Tile.TILE_SIZE,Tile.TILE_SIZE);
-                if(circleIntersectsRectangle(x,y, (int) range,r)){
+        for (Tile[] t : tiles) {
+            for (Tile tile : t) {
+                Rectangle r = new Rectangle(tile.getX() * Tile.TILE_SIZE, tile.getY() * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+                if (circleIntersectsRectangle(x, y, (int) range, r)) {
                     System.out.println("Found " + tile);
                     result.add(tile);
                 }
@@ -343,8 +344,6 @@ public class Level {
 
         return result;
     }
-
-
 
 
     public static boolean circleIntersectsRectangle(int cx, int cy, int r, Rectangle rect) {
@@ -368,12 +367,12 @@ public class Level {
     }
 
 
-    public Mob getMobAt(Tile t){
-        for(Entity e : this.entities){
-            if(!(e instanceof Mob)){
+    public Mob getMobAt(Tile t) {
+        for (Entity e : this.entities) {
+            if (!(e instanceof Mob)) {
                 continue;
             }
-            if(e.getTileX() == t.getX() && e.getTileY() == t.getY()){
+            if (e.getTileX() == t.getX() && e.getTileY() == t.getY()) {
                 return (Mob) e;
             }
         }
@@ -381,9 +380,9 @@ public class Level {
     }
 
     public long getCurrentSpawnRate() {
-        if(roundNum > 5){
+        if (roundNum > 5) {
             return 250;
-        }else{
+        } else {
             return 500;
         }
     }

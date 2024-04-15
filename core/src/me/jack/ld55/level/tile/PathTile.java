@@ -7,6 +7,7 @@ public class PathTile extends Tile{
         super(x, y);
         if(!textureMap.containsKey(getFrozenTexture())){
             textureMap.put(getFrozenTexture(),new Texture(getFrozenTexture()));
+            textureMap.put(getHighlightTexture(),new Texture(getHighlightTexture()));
         }
         this.setWalkable(true);
     }
@@ -18,5 +19,9 @@ public class PathTile extends Tile{
 
     public String getFrozenTexture(){
         return "tiles/frozenpath.png";
+    }
+
+    public String getHighlightTexture() {
+        return "tiles/highlightpath.png";
     }
 }
