@@ -3,6 +3,7 @@ package me.jack.ld55.spells;
 import com.badlogic.gdx.graphics.Texture;
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.mob.Mob;
+import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.entity.tower.Tower;
 import me.jack.ld55.entity.tower.TowerTypeEnum;
 import me.jack.ld55.level.Level;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 
 public class SpikeStripSpell extends Tower {
 
-    int health = 5;
+    float health = 5;
 
     static HashMap<Integer,Texture> texMap = new HashMap<>();
     public SpikeStripSpell(int x, int y) {
@@ -24,7 +25,8 @@ public class SpikeStripSpell extends Tower {
             texMap.put(1,new Texture("animation/spikestrip/1.png"));
 
         }
-        this.texture = texMap.get(health);
+        this.damage = 30;
+        this.texture = texMap.get((int)health);
         this.name = "Thorny Vines";
     }
 
@@ -46,12 +48,21 @@ public class SpikeStripSpell extends Tower {
         if(with instanceof Mob){
             ((Mob) with).damage(5f);
             if(System.currentTimeMillis() - lastDamage >= 500) {
-                health--;
-                this.texture = texMap.get(health);
+                health-=0.5f;
+                this.texture = texMap.get((int)health);
                 lastDamage = System.currentTimeMillis();
             }
         }
         if(health <= 0)
             parent.removeEntity(this);
+    }
+
+    @Override
+    public HashMap<Rune, Integer> getPrice() {
+        HashMap<Rune,Integer> map = new HashMap<>();
+        map.put(Rune.BLUE,10);
+        map.put(Rune.RED,10);
+        map.put(Rune.GREEN,10);
+        return map;
     }
 }

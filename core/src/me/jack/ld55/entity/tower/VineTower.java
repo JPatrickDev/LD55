@@ -6,9 +6,12 @@ import me.jack.ld55.LD55Game;
 import me.jack.ld55.attack.VineAttack;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.projectile.Projectile;
+import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.PathTile;
 import me.jack.ld55.level.tile.Tile;
+
+import java.util.HashMap;
 
 public class VineTower extends Tower{
 
@@ -37,7 +40,13 @@ public class VineTower extends Tower{
     public String getDescription() {
         return "Infested with vines that burrow to strike with a short range, high damage attack.";
     }
-
+    @Override
+    public HashMap<Rune, Integer> getPrice() {
+        HashMap<Rune,Integer> map = new HashMap<>();
+        map.put(Rune.PURPLE,3);
+        map.put(Rune.RED,2);
+        return map;
+    }
 
     @Override
     public void update(Level parent) {

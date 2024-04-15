@@ -49,13 +49,13 @@ public abstract class BaseEnemy extends Mob {
 
     }
 
+    int nextMoveSpeed = -1;
+    int baseMoveSpeed =  4;
     @Override
     public void update(Level parent) {
 
-        int oldSpeed = moveSpeed;
-        if (parent.getTileAt(getX() / Tile.TILE_SIZE, getY() / Tile.TILE_SIZE).freeze) {
-            moveSpeed /= 2;
-        }
+
+
         if (currentTarget != null) {
             if (currentTarget.getX() * Tile.TILE_SIZE > this.getX()) {
                 move(moveSpeed, 0);
@@ -73,10 +73,15 @@ public abstract class BaseEnemy extends Mob {
                     currentTarget = null;
                 } else {
                     currentTarget = path.get(pathPos);
+                    if (parent.getTileAt(getX() / Tile.TILE_SIZE, getY() / Tile.TILE_SIZE).freeze) {
+                        moveSpeed = baseMoveSpeed / 2;
+                    }else{
+                        moveSpeed = baseMoveSpeed;
+                    }
                 }
             }
         }
-        moveSpeed = oldSpeed;
+
     }
 
     @Override

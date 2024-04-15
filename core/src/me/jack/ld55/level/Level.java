@@ -1,7 +1,9 @@
 package me.jack.ld55.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -10,6 +12,7 @@ import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.ExitTile;
 import me.jack.ld55.entity.MobSpawner;
 import me.jack.ld55.entity.mob.Mob;
+import me.jack.ld55.entity.mob.SnakeEnemy;
 import me.jack.ld55.entity.mob.SpiderEnemy;
 import me.jack.ld55.entity.mob.StoneGolemEnemy;
 import me.jack.ld55.entity.rune.Rune;
@@ -47,6 +50,12 @@ public class Level {
 
     public int roundNum = 0;
 
+
+    public Level(){
+        this.w = 12;
+        this.h = 12;
+    }
+
     public Level(int w, int h) {
         tiles = new Tile[w][h];
         towers = new Tower[w][h];
@@ -54,56 +63,55 @@ public class Level {
         this.h = h;
         spawners = new ArrayList<>();
         exits = new ArrayList<>();
-        loadLevel("level1");
         shapeRenderer.setAutoShapeType(true);
         pathfindingGrid = new NavigationGrid<GridCell>(tiles);
 
     }
 
 
-    //TODO Load levels from PNG files
-    public void loadLevel(String name) {
+    public static Level loadLevel(String name) {
+        Level level = new Level(14,14);
         Pixmap pixmap = new Pixmap(Gdx.files.internal("levels/" + name + ".png"));
-
-        for (int x = 0; x != w + 2; x++) {
-            for (int y = 0; y != h + 2; y++) {
+        for(int x= 0;x!= 14;x++){
+            for(int y = 0; y!= 14;y++){
+                level.tiles[x][y] = new VoidTile(x,y);
+            }
+        }
+        for (int x = 0; x != 14; x++) {
+            for (int y = 0; y != 14; y++) {
                 int val = pixmap.getPixel(x, y);
                 // System.out.println(val);
                 if (x >= 1 && x <= 10 && y >= 1 && y <= 10) {
                     if (val == 2134049023) {
-                        tiles[x][y] = new GrassTile(x, y);
+                        level.tiles[x][y] = new GrassTile(x, y);
                     } else if (val == 16720383) {
-                        tiles[x][y] = new PathTile(x, y);
+                        level.tiles[x][y] = new PathTile(x, y);
                     } else if (val == -1224802049) {
-                        tiles[x][y] = new VerticlePathTile(x, y);
+                        level.tiles[x][y] = new VerticlePathTile(x, y);
                     } else if (val == 16748799) {
-                        tiles[x][y] = new MiddlePathTile(x, y);
+                        level.tiles[x][y] = new MiddlePathTile(x, y);
                     } else if (val == -16748801) {
-                        tiles[x][y] = new GrassWithStones(x, y);
+                        level.tiles[x][y] = new GrassWithStones(x, y);
                     } else if (val == -2621185) {
-                        tiles[x][y] = new GrassWithFlowers(x, y);
-                    } else {
-                        if (val != 0)
-                            System.out.println(val);
-                        System.out.flush();
+                        level.tiles[x][y] = new GrassWithFlowers(x, y);
                     }
                 } else {
                     if (val == 1208025087) {
                         MobSpawner e = new MobSpawner((x) * Tile.TILE_SIZE, (y) * Tile.TILE_SIZE);
-                        spawners.add(e);
-                        entities.add(e);
+                        level.spawners.add(e);
+                        level.entities.add(e);
                         System.out.println("Spawner at " + x + "," + y);
-                        tiles[x][y] = new PathTile(x, y);
+                        level.tiles[x][y] = new PathTile(x, y);
                     } else if (val == -16776961) {
                         ExitTile e = new ExitTile((x) * Tile.TILE_SIZE, (y) * Tile.TILE_SIZE);
-                        exits.add(e);
-                        entities.add(e);
+                        level.exits.add(e);
+                        level.entities.add(e);
                         System.out.println("Exit at " + x + "," + y);
-                        tiles[x][y] = new PathTile(x, y);
+                        level.tiles[x][y] = new PathTile(x, y);
                     } else {
                         if (x < 12 && y < 12) {
                             //  System.out.println(val);
-                            tiles[x][y] = new VoidTile(x, y);
+                            level.tiles[x][y] = new VoidTile(x, y);
                         }
                     }
 
@@ -111,6 +119,48 @@ public class Level {
             }
         }
         pixmap.dispose();
+
+        return level;
+    }
+
+
+    public static Texture loadLevelAsIcon(String name) {
+        Pixmap pixmap = new Pixmap(Gdx.files.internal("levels/" + name + ".png"));
+        Pixmap result = new Pixmap(pixmap.getWidth(),pixmap.getHeight(), Pixmap.Format.RGBA8888);
+        for (int x = 0; x != 12 + 2; x++) {
+            for (int y = 0; y != 12 + 2; y++) {
+                int val = pixmap.getPixel(x, y);
+                // System.out.println(val);
+                if (x >= 1 && x <= 10 && y >= 1 && y <= 10) {
+                    if (val == 2134049023) {
+                        result.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.GREEN));
+                    } else if (val == 16720383) {
+                        result.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.BROWN));
+                    } else if (val == -1224802049) {
+                        result.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.BROWN));
+                    } else if (val == 16748799) {
+                        result.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.BROWN));
+                    } else if (val == -16748801) {
+                        result.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.GREEN));
+                    } else if (val == -2621185) {
+                        result.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.GREEN));
+                    }
+                } else {
+                    if (val == 1208025087) {
+                        pixmap.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.BLUE));
+                    } else if (val == -16776961) {
+                        pixmap.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.GREEN));
+                    } else {
+                        pixmap.drawPixel(x,pixmap.getHeight() - y, Color.rgba8888(Color.BLACK));
+                    }
+
+                }
+            }
+        }
+        Texture t = new Texture(result);
+        pixmap.dispose();
+        result.dispose();
+        return t;
     }
 
 
@@ -202,6 +252,8 @@ public class Level {
                     RuneShard ru = new RuneShard(e.getX(), e.getY());
                     if (roundNum < 3) {
                         ru.runeType = Rune.RED;
+                        if(LD55Game.rand(3) == 0)
+                            ru.runeType = Rune.BLUE;
                     }
                     this.spawnEntity(ru);
                 }
@@ -223,10 +275,13 @@ public class Level {
         //  System.out.println("Spawning Mob at " +x + "," + y);
         if (remainingToSpawn != 0) {
             ExitTile exit = exits.get(new Random().nextInt(exits.size()));
-            if (LD55Game.rand(2) == 0 || roundNum <= 3) {
-                spawnEntity(new StoneGolemEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
-            } else {
+            int i = LD55Game.rand(5);
+            if ( i <= 1 || roundNum <= 3) {
+                spawnEntity(new SnakeEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            } else if(i == 3 && roundNum > 5){
                 spawnEntity(new SpiderEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
+            }else{
+                spawnEntity(new StoneGolemEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
             }
             remainingToSpawn--;
         }
@@ -242,7 +297,7 @@ public class Level {
     public void removeEntity(Entity e) {
         toRemove.add(e);
         if (e instanceof RuneShard) {
-            RuneCollectionElement.instance.addRune(((RuneShard) e).getRuneType(), 1);
+            RuneCollectionElement.instance.addRune(((RuneShard) e).getRuneType(), 2);
         }
         if (e instanceof Tower) {
             towers[e.getTileX()][e.getTileY()] = null;
@@ -322,11 +377,7 @@ public class Level {
     }
 
     public int getAmountToSpawn() {
-        if (roundNum <= 5 || true) {
-            return (int) (5 * Math.pow(5, ((roundNum / 5.0))));
-        } else {
-            return (int) (25 * Math.pow(1.5, (roundNum / 15.0)) - 3.5);
-        }
+        return (int) (5 * Math.pow(5, ((roundNum / 5.0))));
     }
 
     public List<Tile> getTilesInRadius(int x, int y, float range) {
@@ -380,9 +431,11 @@ public class Level {
     }
 
     public long getCurrentSpawnRate() {
-        if (roundNum > 5) {
+        if (roundNum > 5 && roundNum <10) {
+            return 400;
+        } else if(roundNum >= 10){
             return 250;
-        } else {
+        }else {
             return 500;
         }
     }

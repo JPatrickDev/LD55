@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import me.jack.ld55.state.InGameState;
+import me.jack.ld55.state.LevelSelectState;
 import me.jack.ld55.state.Screen;
 
 import java.util.Random;
@@ -15,7 +16,7 @@ public class LD55Game extends ApplicationAdapter {
 	public static Screen currentScreen = null;
 	@Override
 	public void create () {
-		currentScreen = new InGameState();
+		currentScreen = new LevelSelectState();
 		currentScreen.show();
 	}
 

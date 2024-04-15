@@ -23,7 +23,7 @@ public class Projectile extends Entity {
         float xSpeed = (fuzz(target.getX()) - x);
         float ySpeed = (fuzz(target.getY()) - y);
 
-        float factor = (float) (15 / Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed));
+        float factor = (float) (20 / Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed));
         xSpeed *= factor;
         ySpeed *= factor;
         dX = xSpeed;

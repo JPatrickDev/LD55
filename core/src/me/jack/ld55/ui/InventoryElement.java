@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 
 public class InventoryElement extends UIElement{
 
-    BitmapFont font = new BitmapFont();
+
+    static BitmapFont font = new BitmapFont();
     @Override
     public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch, int px, int py) {
         super.draw(shapeRenderer, batch, px, py);
@@ -21,17 +22,16 @@ public class InventoryElement extends UIElement{
         for(Rune r : owned){
             if(runes.get(r) == null)
                 continue;
-            Rune.renderMiniRuneAt(batch,shapeRenderer,getX() + px + i * 20,getY() + py,runes.get(r),r);
+            Rune.renderMiniRuneAt(batch,shapeRenderer,getX() + px + i * 30 + 10,getY() + py + 30,runes.get(r),r);
             i++;
         }
 
-        font.draw(batch,"Rune Inventory",getX() + px,getY() + py + 40);
+        font.draw(batch,"Rune Inventory",getX() + px + 13,getY() + py + 65);
     }
 
     public InventoryElement(int x, int y, int w, int h) {
         super(x, y, w, h);
-
-
+        this.background = createBackgroundFromTiles("gui/dialogs/small");
 
     }
 }

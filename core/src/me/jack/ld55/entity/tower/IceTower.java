@@ -1,10 +1,12 @@
 package me.jack.ld55.entity.tower;
 
 import com.badlogic.gdx.graphics.Texture;
+import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.PathTile;
 import me.jack.ld55.level.tile.Tile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,5 +41,13 @@ public class IceTower extends Tower{
     @Override
     public String getDescription() {
         return "An Icy Monument that freezes the path around it, slowing down enemys.";
+    }
+
+    @Override
+    public HashMap<Rune, Integer> getPrice() {
+        HashMap<Rune,Integer> map = new HashMap<>();
+        map.put(Rune.BLUE,15);
+        map.put(Rune.RED,10);
+        return map;
     }
 }

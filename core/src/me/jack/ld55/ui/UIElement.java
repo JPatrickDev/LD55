@@ -21,7 +21,7 @@ public abstract class UIElement {
         this.h = h;
     }
 
-    public BitmapFont font = new BitmapFont();
+    public static BitmapFont font = new BitmapFont();
     public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch, int px,int py){
         if(this.background != null){
             batch.draw(background,px + getX(), py + getY());
@@ -81,21 +81,21 @@ public abstract class UIElement {
         Pixmap horizontal = locate(path,"/horizontal.png");
         Pixmap corner = locate(path,"/corner.png");
         Pixmap finalTexture = new Pixmap(w, h, RGBA8888);
-
+        for (int xx = 0; xx != (w - corner.getWidth()) / inner.getWidth(); xx++) {
+            for (int yy = 0; yy != (h - corner.getHeight()) / inner.getHeight(); yy++) {
+                finalTexture.drawPixmap(inner, xx * inner.getWidth() + corner.getWidth(), yy * inner.getHeight() + corner.getHeight());
+            }
+        }
         for (int i = 0; i != (h - corner.getHeight()) / vertical.getHeight(); i++) {
             finalTexture.drawPixmap(vertical, 0, corner.getHeight() + i * vertical.getHeight());
             finalTexture.drawPixmap(vertical, w - vertical.getWidth(), corner.getHeight() + i * vertical.getHeight());
         }
         for (int i = 0; i != (w - corner.getWidth()) / vertical.getWidth(); i++) {
             finalTexture.drawPixmap(horizontal, corner.getWidth() + i * horizontal.getWidth(), 0);
-            finalTexture.drawPixmap(horizontal, corner.getWidth() + i * horizontal.getWidth(), w - vertical.getHeight() + corner.getHeight() / 2);
+            finalTexture.drawPixmap(horizontal, corner.getWidth() + i * horizontal.getWidth(), h - vertical.getHeight());
         }
 
-        for (int xx = 0; xx != (w - corner.getWidth()) / inner.getWidth(); xx++) {
-            for (int yy = 0; yy != (h - corner.getHeight()) / inner.getHeight(); yy++) {
-                finalTexture.drawPixmap(inner, xx * inner.getWidth() + corner.getWidth(), yy * inner.getHeight() + corner.getHeight());
-            }
-        }
+
 
         finalTexture.drawPixmap(corner, 0, 0);
         finalTexture.drawPixmap(corner, w - corner.getWidth(), 0);

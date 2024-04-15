@@ -35,7 +35,7 @@ public abstract class Tile extends GridCell {
     }
 
     public void renderImages(SpriteBatch batch){
-         if(this.freeze && this instanceof PathTile){
+         if(this.freeze && this instanceof PathTile && !this.highlight){
              batch.draw(textureMap.get(((PathTile)this).getFrozenTexture()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);
          }else if(this.highlight && this instanceof PathTile){
              batch.draw(textureMap.get(((PathTile)this).getHighlightTexture()),this.getX() * Tile.TILE_SIZE,this.getY() * Tile.TILE_SIZE);

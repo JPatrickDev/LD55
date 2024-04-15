@@ -23,7 +23,8 @@ public class UIContainer {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
 
-    private int w,h; //TODO: Some sort of 9patch type thing for easy UI dialogs?
+    private int w;
+    public int h; //TODO: Some sort of 9patch type thing for easy UI dialogs?
     private int x,y;
 
     public ClickListener listener;

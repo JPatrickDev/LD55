@@ -3,6 +3,7 @@ package me.jack.ld55.attack;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import me.jack.ld55.animation.Animation;
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.level.Level;
@@ -10,10 +11,11 @@ import me.jack.ld55.level.Level;
 public class VineAttack extends Entity {
 
     private int dir;
-
+    Animation animation = null;
     public VineAttack(int x, int y, int dir) {
         super(x, y, 64, 128);
         this.dir = dir;
+        animation = new Animation("animation/vineattack");
     }
 
     @Override
@@ -24,7 +26,7 @@ public class VineAttack extends Entity {
     @Override
     public void drawImages(SpriteBatch batch) {
         float angle = 90 * dir;
-        batch.draw(new Texture("animation/vineattack/1.png"),getX(),getY(),32,28,64,128,1,1,angle,0,0,64,128,false,false);
+        animation.draw(batch,getX(),getY(), (int) angle);
     }
     long spawnTime = System.currentTimeMillis();
     @Override

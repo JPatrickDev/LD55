@@ -9,10 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.projectile.Projectile;
+import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.PathTile;
 import me.jack.ld55.level.tile.Tile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,39 +31,42 @@ public abstract class Tower extends Entity {
 
     public TowerTypeEnum type;
 
-    public Tower(int x, int y,TowerTypeEnum type) {
+    public Tower(int x, int y, TowerTypeEnum type) {
         super(x, y, Tile.TILE_SIZE, Tile.TILE_SIZE);
         this.type = type;
     }
 
     @Override
     public void drawShapes(ShapeRenderer renderer) {
-    //    renderer.setColor(Color.BLACK);
-      //  renderer.set(ShapeRenderer.ShapeType.Filled);
-      //  renderer.circle(getX() + 32, getY() + 32, 16);
-      //  renderer.set(ShapeRenderer.ShapeType.Line);
+        //    renderer.setColor(Color.BLACK);
+        //  renderer.set(ShapeRenderer.ShapeType.Filled);
+        //  renderer.circle(getX() + 32, getY() + 32, 16);
+        //  renderer.set(ShapeRenderer.ShapeType.Line);
     }
 
-    public void drawAsPlacing(ShapeRenderer renderer, SpriteBatch batch,boolean canPlace, Level parent){
-        if(canPlace){
-         //   renderer.set(ShapeRenderer.ShapeType.Line);
-         //   renderer.circle(getX() + 32, getY() + 32, range);
+    public void drawAsPlacing(ShapeRenderer renderer, SpriteBatch batch, boolean canPlace, Level parent) {
+        if (canPlace) {
+            //   renderer.set(ShapeRenderer.ShapeType.Line);
+            //   renderer.circle(getX() + 32, getY() + 32, range);
             drawShapes(renderer);
             drawImages(batch);
-            List<Tile> pathsInRange = parent.getTilesInRadius(getX() + 32,getY() + 32,range - 4).stream().filter(x -> x instanceof PathTile).collect(Collectors.toList());
-            for(Tile t : pathsInRange){
+            List<Tile> pathsInRange = parent.getTilesInRadius(getX() + 32, getY() + 32, range - 4).stream().filter(x -> x instanceof PathTile).collect(Collectors.toList());
+            for (Tile t : pathsInRange) {
                 t.highlight = true;
             }
-        }else{
+        } else {
 
         }
     }
+
     @Override
     public void drawImages(SpriteBatch batch) {
-        batch.draw(texture,getX(),getY());
+        if (texture != null)
+            batch.draw(texture, getX(), getY());
     }
 
     long lastShot = 0;
+
     @Override
     public void update(Level parent) {
 
@@ -74,9 +79,11 @@ public abstract class Tower extends Entity {
     public abstract Tower clone();
 
 
-    public void onSpawn(Level level){
+    public void onSpawn(Level level) {
 
     }
 
     public abstract String getDescription();
+
+    public abstract HashMap<Rune, Integer> getPrice();
 }

@@ -8,7 +8,7 @@ import me.jack.ld55.LD55Game;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(640 + 128+175,640 +128);
+		config.setWindowedMode(640 + 128+175 + 64,640 +128);
 		config.setForegroundFPS(60);
 		config.setTitle("LD55");
 		new Lwjgl3Application(new LD55Game(), config);

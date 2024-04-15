@@ -18,6 +18,7 @@ public class SpiderEnemy extends BaseEnemy {
     public SpiderEnemy(int x, int y, int targetX, int targetY, Level parent) {
         super(x, y, targetX, targetY, parent);
         animation = new Animation("animation/spiderwalk");
+
     }
 
     @Override
@@ -27,6 +28,6 @@ public class SpiderEnemy extends BaseEnemy {
 
     @Override
     public float getMaxHealth() {
-        return 5f;
+        return 15f;
     }
 }

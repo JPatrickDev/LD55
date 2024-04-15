@@ -35,7 +35,7 @@ public class CardCarousel extends UIElement{
         int yPos = py;
         for(UIElement e : elements){
             e.setY(getY() + yPos);
-            e.setX(getX());
+            e.setX(getX() + (getW() / 2 - e.getW() / 2));
             e.draw(shapeRenderer,batch,px,py);
             yPos += e.getH()  + 5;
         }
@@ -68,10 +68,6 @@ public class CardCarousel extends UIElement{
         prevMY = my;
 
 
-        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.ORANGE);
-        shapeRenderer.rect(getX() + px,getY() + py,getW(),getH());
-        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
     }
 
 

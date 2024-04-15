@@ -68,17 +68,12 @@ public class CardElement extends UIElement {
         spellcardback = getCardTexture("cards/spellcardback.png");
         spellcardsmall = getCardTexture("cards/spellcardsmall.png");
         this.tower = tower;
-        if (tower instanceof WizardsTower) {
-            cost.put(Rune.RED, LD55Game.rand(1) + 2);
-        } else {
-            cost.put(Rune.RED, LD55Game.rand(3) + 2);
-            cost.put(Rune.BLUE, LD55Game.rand(1) + 1);
-        }
+        this.cost = tower.getPrice();
         statBars.add(new StatBarElement(42, 72, 94, 18, valueToRange((int) tower.range, 3 * Tile.TILE_SIZE), Color.LIME, Color.GREEN));
         statBars.add(new StatBarElement(42, 72 - 22, 94, 18, valueToRange((int) tower.damage, 75), Color.RED, Color.ORANGE));
         statBars.add(new StatBarElement(42, 72 - 22 - 20, 94, 18, 6 - valueToRange((int) tower.fireRate, 3000), Color.CYAN, Color.YELLOW));
 
-        countDisplay = new CardAmountElement(50, getH() - 20, 64, 64, count);
+        //countDisplay = new CardAmountElement(50, getH() - 20, 64, 64, count);
 
     }
 
@@ -95,6 +90,10 @@ public class CardElement extends UIElement {
 
     @Override
     public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch, int x, int y) {
+        if(count == 0 )
+            return;
+        if (!RuneCollectionElement.canAfford(this) && !inCarouselMode)
+           return;
         for (int i = count; i != 0; i--) {
             drawCardUI(shapeRenderer, batch, x + i * 3, y + i * 8);
         }
@@ -113,7 +112,7 @@ public class CardElement extends UIElement {
             Rune.renderMiniRuneAt(batch, shapeRenderer, x + getX() + xof, y + getY() - 25, p, r);
             xof += 25;
         }
-        if ((!mode && !inCarouselMode) || (inCarouselMode && !mode)) {
+        if (!inCarouselMode && !mode) {
 
             for (StatBarElement e : statBars) {
                 e.draw(shapeRenderer, batch, getX() + x, getY() + y);
@@ -122,10 +121,9 @@ public class CardElement extends UIElement {
         }
 
 
-        if (!RuneCollectionElement.canAfford(this) && !inCarouselMode)
-            batch.draw(lockedTexture, x + getX(), y + getY());
-        if (!inCarouselMode)
-            countDisplay.draw(shapeRenderer, batch, getX() + x, getY() + y);
+
+       // if (!inCarouselMode)
+       //     countDisplay.draw(shapeRenderer, batch, getX() + x, getY() + y);
     }
 
     public void drawCardUI(ShapeRenderer shapeRenderer, SpriteBatch batch, int x, int y) {
@@ -167,9 +165,9 @@ public class CardElement extends UIElement {
             batch.draw(lockedTexture, x + getX(), y + getY());
     }
 
-    GlyphLayout layout = new GlyphLayout();
+    static GlyphLayout layout = new GlyphLayout();
 
-    private void drawTextInCenter(Rectangle rectangle, String text, SpriteBatch batch) {
+public static void drawTextInCenter(Rectangle rectangle, String text, SpriteBatch batch) {
         String[] words = text.split(" ");
         String currentLine = "";
         List<String> lines = new ArrayList<>();
@@ -201,11 +199,19 @@ public class CardElement extends UIElement {
     @Override
     public int getH() {
         if (inCarouselMode) {
-            return smallTexture.getHeight() + count * 10;
+            return smallTexture.getHeight() + count * 8;
         } else
-            return super.getH() + count * 10;
+            return super.getH() + count * 8;
     }
 
+    @Override
+    public int getW() {
+        if(inCarouselMode){
+            return smallTexture.getWidth() + count*3;
+        }else{
+            return super.getW() + count * 3;
+        }
+    }
 
     @Override
     public void setX(int x) {
