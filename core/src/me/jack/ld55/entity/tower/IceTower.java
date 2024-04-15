@@ -35,4 +35,9 @@ public class IceTower extends Tower{
             t.freeze = true;
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "An Icy Monument that freezes the path around it, slowing down enemys.";
+    }
 }

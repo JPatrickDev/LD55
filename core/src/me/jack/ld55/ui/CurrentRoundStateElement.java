@@ -20,8 +20,9 @@ public class CurrentRoundStateElement extends UIElement{
          int mobsInRound = InGameState.instance.currentLevel.mobsInRound;
          int remaining = InGameState.instance.currentLevel.remainingToSpawn + InGameState.instance.currentLevel.mobCountRemaining();
 
-         font.draw(batch,"Round: " + currentRound,getX() + px,getY() + py + 20);
-         font.draw(batch, "Remaining: " + remaining + "/" + mobsInRound,getX()+px,getY()+ py);
+         font.draw(batch,"Round: " + currentRound,getX() + px,getY() + py + 30);
+         font.draw(batch, "Remaining: " + remaining + "/" + mobsInRound,getX()+px,getY()+ py+15);
+         font.draw(batch, "Lives: " + InGameState.instance.currentLevel.livesRemaining + "/" + 10,getX()+px,getY()+ py);
     }
 
 

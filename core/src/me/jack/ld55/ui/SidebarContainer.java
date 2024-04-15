@@ -8,7 +8,7 @@ public class SidebarContainer extends UIContainer{
     public SidebarContainer(int x, int y, int w, int h) {
         super(x, y, w, h);
         //this.background = new Texture("gui/sidebar.png");
-        cardCarousel = new CardCarousel(0,320,175,400);
+        cardCarousel = new CardCarousel(0,175,175,575);
         this.addElement(cardCarousel);
         this.addElement(new CurrentRoundStateElement(24,40,300,150));
     }

@@ -11,16 +11,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.jack.ld55.LD55Game;
-import me.jack.ld55.entity.tower.IceTower;
-import me.jack.ld55.entity.tower.Tower;
-import me.jack.ld55.entity.tower.VineTower;
-import me.jack.ld55.entity.tower.WizardsTower;
+import me.jack.ld55.entity.tower.*;
 import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.GrassTile;
+import me.jack.ld55.level.tile.PathTile;
 import me.jack.ld55.level.tile.Tile;
+import me.jack.ld55.spells.SpikeStripSpell;
 import me.jack.ld55.ui.*;
 
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,17 +68,21 @@ public class InGameState extends Screen {
 
             @Override
             public void onMouseIn(UIElement in) {
-                System.out.println(in);
+                if(in instanceof CardElement){
+                    ((CardElement) in).mode = true;
+                }
             }
 
             @Override
             public void onMouseOut(UIElement out) {
-                System.out.println(out);
+                if(out instanceof CardElement){
+                    ((CardElement) out).mode = true;
+                }
             }
         });
        // sidebar.addElement();
         new RuneCollectionElement(0,210,300,400);
-        sidebar.addElement(new InventoryElement(20,260,300,200));
+        sidebar.addElement(new InventoryElement(20,100,300,200));
     }
 
 
@@ -93,14 +97,14 @@ public class InGameState extends Screen {
         CardElement el = new CardElement(18, 250, 150, 200, new WizardsTower(0, 0));
         el.setCount(LD55Game.rand(4) + 1);
         cards.addElement(el);
-        el = new CardElement(160 + 20, 250, 150, 200, new VineTower(0, 0));
+        el = new CardElement(160 + 20, 250, 150, 200, new SpikeStripSpell(0, 0));
         el.setCount(LD55Game.rand(4) + 1);
         cards.addElement(el);
         el = new CardElement(320 + 20, 250, 150, 200, new IceTower(0, 0));
         el.setCount(LD55Game.rand(4) + 1);
         cards.addElement(el);
 
-        cards.addElement(new InventoryElement(50,150,300,200));
+    //    cards.addElement(new InventoryElement(50,0,300,200));
 
         if (currentLevel.roundNum != 0)
             cards.addElement(new TextAreaElement(150, 500, 512, 100, "Round " + currentLevel.roundNum + " Completed"));
@@ -205,7 +209,7 @@ public class InGameState extends Screen {
             inHand.setX(x * 64);
             inHand.setY(y * 64);
 
-            inHand.drawAsPlacing(shapeRenderer, batchRenderer, currentLevel.getTileAt(x, y) instanceof GrassTile,currentLevel);
+            inHand.drawAsPlacing(shapeRenderer, batchRenderer, (inHand.type != TowerTypeEnum.SPELL && (currentLevel.getTileAt(x,y) instanceof GrassTile)) || (inHand.type == TowerTypeEnum.SPELL && currentLevel.getTileAt(x,y) instanceof PathTile),currentLevel);
 
         } else {
             if (roundEndDialog == null && currentLevel.remainingToSpawn == 0 && !currentLevel.mobsRemaining()) {
@@ -224,6 +228,9 @@ public class InGameState extends Screen {
     }
 
     public void update() {
+        if(currentLevel.livesRemaining <= 0){
+            //Game over
+        }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && inHand != null) {
             int x = Gdx.input.getX();
             int y = Gdx.graphics.getHeight() - Gdx.input.getY();

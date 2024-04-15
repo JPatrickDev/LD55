@@ -23,6 +23,12 @@ public class CardCarousel extends UIElement{
     }
 
     int scroll = 0;
+
+    int prevMX =0, prevMY;
+    public void update(){
+
+
+    }
     @Override
     public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch, int px, int py) {
 
@@ -39,18 +45,28 @@ public class CardCarousel extends UIElement{
             scroll--;
         }
 
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-            System.out.println("checking");
-            int mx = Gdx.input.getX();
-            int my = Gdx.graphics.getHeight() -  Gdx.input.getY();
-            for(UIElement e : elements){
-                Rectangle box = new Rectangle(px + e.getX() , py + e.getY() ,e.getW(),e.getH());
-                if(box.contains(mx,my)){
-                    if(listener != null)
+        int mx = Gdx.input.getX();
+        int my = Gdx.graphics.getHeight() -  Gdx.input.getY();
+        for(UIElement e : elements){
+            Rectangle box = new Rectangle(e.getX() + px, e.getY() + py,e.getW(),e.getH());
+            if(box.contains(mx,my)){
+                if(listener != null) {
+                    if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
                         listener.onClick(e);
+                    if(!box.contains(prevMX,prevMY)){
+                        listener.onMouseIn(e);
+                    }
+                }
+            }else{
+                if(box.contains(prevMX,prevMY)){
+                    listener.onMouseOut(e);
                 }
             }
         }
+
+        prevMX = mx;
+        prevMY = my;
+
 
         shapeRenderer.set(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.ORANGE);

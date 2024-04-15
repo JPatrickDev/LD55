@@ -3,7 +3,7 @@ Game over when too many mobs get through
 
 Exp
     - Mobs drop something when they die?/
-        - This then can be spent on card pieces?
+        - This then can be spent on card pieces?/
         - "Runes"?/
             - They float towards the nearest tower?
             - Just fade after a few seconds?/

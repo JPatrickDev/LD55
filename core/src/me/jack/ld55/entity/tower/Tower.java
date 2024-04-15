@@ -77,4 +77,6 @@ public abstract class Tower extends Entity {
     public void onSpawn(Level level){
 
     }
+
+    public abstract String getDescription();
 }

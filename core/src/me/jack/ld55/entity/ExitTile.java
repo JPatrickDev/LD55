@@ -3,6 +3,7 @@ package me.jack.ld55.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.Tile;
 
@@ -32,5 +33,8 @@ public class ExitTile extends Entity{
     public void onCollide(Entity with,Level parent) {
         super.onCollide(with,parent);
         parent.removeEntity(with);
+        if(with instanceof Mob){
+            parent.livesRemaining--;
+        }
     }
 }

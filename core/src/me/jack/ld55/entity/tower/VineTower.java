@@ -33,6 +33,11 @@ public class VineTower extends Tower{
         return new VineTower(this.getX(),this.getY());
     }
 
+    @Override
+    public String getDescription() {
+        return "Infested with vines that burrow to strike with a short range, high damage attack.";
+    }
+
 
     @Override
     public void update(Level parent) {

@@ -15,6 +15,7 @@ import me.jack.ld55.entity.mob.StoneGolemEnemy;
 import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.entity.rune.RuneShard;
 import me.jack.ld55.entity.tower.Tower;
+import me.jack.ld55.entity.tower.TowerTypeEnum;
 import me.jack.ld55.level.tile.*;
 
 import java.awt.*;
@@ -115,7 +116,9 @@ public class Level {
 
     public boolean placeTower(Tower t) {
         try {
-            if (towers[t.getX() / 64][t.getY() / 64] == null && tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile) {
+            if (towers[t.getX() / 64][t.getY() / 64] == null && (tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile
+                  || (tiles[t.getX() / 64][t.getY() / 64] instanceof PathTile && t.type == TowerTypeEnum.SPELL)
+            )) {
                 towers[t.getX() / 64][t.getY() / 64] = t;
                 entities.add(t);
                 t.onSpawn(this);
@@ -241,11 +244,17 @@ public class Level {
         if(e instanceof  RuneShard){
             RuneCollectionElement.instance.addRune(((RuneShard)e).getRuneType(),1);
         }
+        if(e instanceof Tower){
+            towers[e.getTileX()][e.getTileY()] = null;
+        }
     }
 
 
     public int remainingToSpawn = 0;
     public int mobsInRound   = 0;
+
+    public int livesRemaining = 10;
+
     public void startRound() {
         if(remainingToSpawn > 0){
             return;

@@ -24,6 +24,11 @@ public class WizardsTower extends Tower{
     }
 
     @Override
+    public String getDescription() {
+        return "An ancient tower that shoots mystical orbs at targets";
+    }
+
+    @Override
     public void update(Level parent) {
         super.update(parent);
         Mob target = parent.getRandomMobInRange(this, range);
