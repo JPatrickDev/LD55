@@ -13,6 +13,9 @@ public class WizardsTower extends Tower{
         fireRate = 500;
         texture = new Texture("towers/wizardstower.png");
         name = "Wizards Tower";
+        setH(texture.getHeight());
+        setW(texture.getWidth());
+        this.damage = 10;
     }
 
     @Override

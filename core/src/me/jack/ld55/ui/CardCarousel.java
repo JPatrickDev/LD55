@@ -64,7 +64,7 @@ public class CardCarousel extends UIElement{
             if(e instanceof CardElement)
             if(((CardElement) e).getTower().getName().equals(toAdd.getTower().getName())){
                 System.out.println("Merging");
-                ((CardElement) e).count += toAdd.count;
+                ((CardElement) e).setCount(((CardElement) e).getCount() + toAdd.getCount());
                 return;
             }
         }

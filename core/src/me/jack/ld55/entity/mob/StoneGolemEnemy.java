@@ -21,6 +21,6 @@ public class StoneGolemEnemy extends BaseEnemy {
 
     @Override
     public float getMaxHealth() {
-        return 35f;
+        return 15f;
     }
 }

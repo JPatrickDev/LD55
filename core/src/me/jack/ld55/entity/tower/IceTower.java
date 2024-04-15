@@ -9,12 +9,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class IceTower extends Tower{
+
+
     public IceTower(int x, int y) {
         super(x, y,TowerTypeEnum.PASSIVE);
         range = (float) (1.5 * Tile.TILE_SIZE);
-        fireRate = 500;
+        fireRate = 0;
         texture = new Texture("towers/icepillar.png");
         name = "Ice Pillar";
+        setH(texture.getHeight());
+        setW(texture.getWidth());
+        damage = 0;
     }
 
     @Override

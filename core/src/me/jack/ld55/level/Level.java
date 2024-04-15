@@ -220,7 +220,7 @@ public class Level {
         //  System.out.println("Spawning Mob at " +x + "," + y);
         if (remainingToSpawn != 0) {
             ExitTile exit = exits.get(new Random().nextInt(exits.size()));
-            if(LD55Game.rand(2)== 0){
+            if(LD55Game.rand(2)== 0 || roundNum <= 3){
                 spawnEntity(new StoneGolemEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
             }else{
                 spawnEntity(new SpiderEnemy(x, y, (exit.getX() / Tile.TILE_SIZE), exit.getY() / Tile.TILE_SIZE, this));
@@ -245,13 +245,14 @@ public class Level {
 
 
     public int remainingToSpawn = 0;
-
+    public int mobsInRound   = 0;
     public void startRound() {
         if(remainingToSpawn > 0){
             return;
         }
         roundNum++;
         remainingToSpawn = getAmountToSpawn();
+        mobsInRound = remainingToSpawn;
         System.out.println("Round: " + roundNum + ", Spawning " + remainingToSpawn + " Started");
     }
 
@@ -287,6 +288,9 @@ public class Level {
         return entities.stream().anyMatch(x -> x instanceof Mob);
     }
 
+    public int mobCountRemaining(){
+        return (int) entities.stream().filter(x -> x instanceof Mob).count();
+    }
     public static int dist(Entity o, Entity t) {
         return (int) Point2D.distance(o.getX(), o.getY(), t.getX(), t.getY());
     }
@@ -308,7 +312,7 @@ public class Level {
     }
 
     public int getAmountToSpawn() {
-        if (roundNum <= 5) {
+        if (roundNum <= 5 || true) {
             return (int) (5 * Math.pow(5, ((roundNum / 5.0))));
         } else {
             return (int) (25 * Math.pow(1.5, (roundNum / 15.0)) - 3.5);
@@ -367,4 +371,11 @@ public class Level {
         return null;
     }
 
+    public long getCurrentSpawnRate() {
+        if(roundNum > 5){
+            return 250;
+        }else{
+            return 500;
+        }
+    }
 }

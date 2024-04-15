@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -27,7 +28,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class InGameState extends Screen {
 
-    private Level currentLevel;
+
+    public static InGameState instance;
+    public Level currentLevel;
 
     public static Tower inHand = null;
 
@@ -41,6 +44,7 @@ public class InGameState extends Screen {
 
     @Override
     public void show() {
+        instance = this;
         currentLevel = new Level(12, 12); //10x10 level with 1 tile border for spawners/exits
         shapeRenderer.setAutoShapeType(true);
         sidebar = new SidebarContainer(775, 0, 175, 768);
@@ -53,16 +57,28 @@ public class InGameState extends Screen {
                         sidebar.addCard(new CardElement(0, 0, 150, 300, inHand));
                     }
                     inHand = ((CardElement) clicked).getTower().clone();
-                    ((CardElement) clicked).count--;
-                    if (((CardElement) clicked).count <= 0) {
+                    ((CardElement) clicked).setCount(((CardElement) clicked).getCount()-1);
+                    if (((CardElement) clicked).getCount() <= 0) {
                         sidebar.removeCard(clicked);
                     }
                 } else {
 
                 }
             }
+
+            @Override
+            public void onMouseIn(UIElement in) {
+                System.out.println(in);
+            }
+
+            @Override
+            public void onMouseOut(UIElement out) {
+                System.out.println(out);
+            }
         });
-        sidebar.addElement(new RuneCollectionElement(0,210,300,400));
+       // sidebar.addElement();
+        new RuneCollectionElement(0,210,300,400);
+        sidebar.addElement(new InventoryElement(20,260,300,200));
     }
 
 
@@ -72,53 +88,73 @@ public class InGameState extends Screen {
             inHand = null;
         }
 
-        UIContainer cards = new UIContainer(128, 128, 512, 512);
-        CardElement el = new CardElement(0, 280, 150, 200, new WizardsTower(0, 0));
-        el.count = LD55Game.rand(4) + 1;
+        UIContainer cards = new UIContainer(128, 128, 524, 518);
+      //  cards.background = new Texture("gui/levelendbackground.png");
+        CardElement el = new CardElement(18, 250, 150, 200, new WizardsTower(0, 0));
+        el.setCount(LD55Game.rand(4) + 1);
         cards.addElement(el);
-        el = new CardElement(160, 280, 150, 200, new VineTower(0, 0));
-        el.count = LD55Game.rand(4) + 1;
+        el = new CardElement(160 + 20, 250, 150, 200, new VineTower(0, 0));
+        el.setCount(LD55Game.rand(4) + 1);
         cards.addElement(el);
-        el = new CardElement(320, 280, 150, 200, new IceTower(0, 0));
-        el.count = LD55Game.rand(4) + 1;
+        el = new CardElement(320 + 20, 250, 150, 200, new IceTower(0, 0));
+        el.setCount(LD55Game.rand(4) + 1);
         cards.addElement(el);
 
+        cards.addElement(new InventoryElement(50,150,300,200));
 
         if (currentLevel.roundNum != 0)
             cards.addElement(new TextAreaElement(150, 500, 512, 100, "Round " + currentLevel.roundNum + " Completed"));
         if (currentLevel.roundNum == 0)
             cards.addElement(new TextAreaElement(150, 500, 512, 100, "Game Starting"));
-        cards.listener = clicked -> {
-            if (clicked instanceof CardElement) {
-                CardElement e = new CardElement(0, 0, 150, 300, ((CardElement) clicked).getTower().clone());
-                e.count = ((CardElement) clicked).count;
-                e.cost = new HashMap<>();
-                if(RuneCollectionElement.buy((CardElement) clicked)) {
-                    sidebar.addCard(e);
-                    cards.removeElement(clicked);
-                    if (cards.elements.stream().noneMatch(x -> x instanceof CardElement)) {
-                        hideRoundEndDialog();
-                    }
+        cards.listener = new UIContainer.ClickListener() {
+            @Override
+            public void onClick(UIElement clicked) {
+                if (clicked instanceof CardElement) {
+                    CardElement e = new CardElement(0, 0, 150, 300, ((CardElement) clicked).getTower().clone());
+                    e.setCount (((CardElement) clicked).getCount());
+                    e.cost = new HashMap<>();
+                    if(RuneCollectionElement.buy((CardElement) clicked)) {
+                        sidebar.addCard(e);
+                        cards.removeElement(clicked);
+                        if (cards.elements.stream().noneMatch(x -> x instanceof CardElement)) {
+                            hideRoundEndDialog();
+                        }
 
-                }
-                //     inHand = ((CardElement) clicked).getTower().clone();
-                //  hideRoundEndDialog();
-                //  currentLevel.startRound();
-            }else if(clicked instanceof TextAreaElement){
-                if(sidebar.hasCardsInHand() || noMoreAffordableCards() || true) {
-                    if (((TextAreaElement) clicked).text.contains("Place Towers")) {
-                        hideRoundEndDialog();
-                    } else if (((TextAreaElement) clicked).text.startsWith("Start Round")) {
-                        hideRoundEndDialog();
-                        currentLevel.startRound();
                     }
+                    //     inHand = ((CardElement) clicked).getTower().clone();
+                    //  hideRoundEndDialog();
+                    //  currentLevel.startRound();
+                }else if(clicked instanceof TextAreaElement){
+                    if(sidebar.hasCardsInHand() || noMoreAffordableCards() || true) {
+                        if (((TextAreaElement) clicked).text.contains("Place Towers")) {
+                            hideRoundEndDialog();
+                        } else if (((TextAreaElement) clicked).text.startsWith("Start Round")) {
+                            hideRoundEndDialog();
+                            currentLevel.startRound();
+                        }
+                    }
+                    System.out.println(((TextAreaElement) clicked).text);
                 }
-                System.out.println(((TextAreaElement) clicked).text);
+            }
+
+            @Override
+            public void onMouseIn(UIElement in) {
+                if(in instanceof CardElement){
+                    ((CardElement) in).mode = true;
+                }
+            }
+
+            @Override
+            public void onMouseOut(UIElement out) {
+                if(out instanceof CardElement){
+                    ((CardElement) out).mode = false;
+                }
             }
         };
 
-        cards.addElement(new TextAreaElement(150, 50, 512, 50, "Start Round " + (currentLevel.roundNum + 1)));
-        cards.addElement(new TextAreaElement(150, 25, 512, 50, "Place Towers "));
+
+        cards.addElement(new TextAreaElement(50, 25, 150, 50, "Start Round " + (currentLevel.roundNum + 1)));
+        cards.addElement(new TextAreaElement(300, 25, 150,  50, "Place Towers "));
 
         roundEndDialog = cards;
     }
@@ -144,7 +180,7 @@ public class InGameState extends Screen {
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     SpriteBatch batchRenderer = new SpriteBatch();
 
-
+    Texture nextRoundButton = new Texture("gui/nextroundbutton.png");
     @Override
     public void render() {
         update();
@@ -174,7 +210,8 @@ public class InGameState extends Screen {
         } else {
             if (roundEndDialog == null && currentLevel.remainingToSpawn == 0 && !currentLevel.mobsRemaining()) {
                 Rectangle r = new Rectangle(300,300,350,30);
-                font.draw(batchRenderer, "START NEXT ROUND", 300, 300);
+                //font.draw(batchRenderer, "START NEXT ROUND", 300, 300);
+                batchRenderer.draw(nextRoundButton,300,300);
                 int x = Gdx.input.getX();
                 int y = Gdx.graphics.getHeight() - Gdx.input.getY();
                 if(r.contains(x,y) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){

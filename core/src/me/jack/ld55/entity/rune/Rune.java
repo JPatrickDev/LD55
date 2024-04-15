@@ -50,7 +50,7 @@ public enum Rune {
         }
         batch.draw(toDraw,x,y);
         if(amount > 1)
-        font.draw(batch,"x" + amount,x + toDraw.getWidth(),y +10);
+        font.draw(batch,"x" + amount,x ,y - 5);
     }
 
     public static void renderFullRuneAt(SpriteBatch batch, ShapeRenderer renderer, int x,int y, int amount, Rune rune,int pieces){

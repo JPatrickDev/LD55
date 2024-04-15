@@ -27,6 +27,6 @@ public class SpiderEnemy extends BaseEnemy {
 
     @Override
     public float getMaxHealth() {
-        return 15f;
+        return 5f;
     }
 }

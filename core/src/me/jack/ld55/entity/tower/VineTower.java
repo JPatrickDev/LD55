@@ -14,10 +14,13 @@ public class VineTower extends Tower{
 
     public VineTower(int x, int y) {
         super(x, y,TowerTypeEnum.AOE);
-        range = (float) (1 * Tile.TILE_SIZE);
+        range = (float) (0.75 * Tile.TILE_SIZE);
         fireRate = 2500;
         texture = new Texture("towers/vinetower.png");
         name = "Vine Labyrinth";
+        setH(texture.getHeight());
+        setW(texture.getWidth());
+        this.damage = 50;
     }
 
     @Override

@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class Tower extends Entity {
-
+    public float damage = 0;
     public float range;
-    protected long fireRate;
+    public long fireRate;
 
     protected Texture texture;
 
