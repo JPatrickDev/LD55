@@ -47,7 +47,7 @@ public class WizardsTower extends Tower {
         }
         Mob target = parent.getRandomMobInRange(this, range);
         if (target != null && currentShot.animation.isDone() && System.currentTimeMillis() - lastShot >= fireRate) {
-            System.out.println("Random mob in range " + target);
+         //   System.out.println("Random mob in range " + target);
             lastShot = System.currentTimeMillis();
             currentShot.fire(target);
             currentShot = null;
@@ -62,7 +62,7 @@ public class WizardsTower extends Tower {
     @Override
     public HashMap<Rune, Integer> getPrice() {
         HashMap<Rune, Integer> map = new HashMap<>();
-        map.put(Rune.RED, 5);
+        map.put(Rune.RED, 10);
         return map;
     }
 }

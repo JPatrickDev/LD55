@@ -271,7 +271,19 @@ public class Level {
                         if(LD55Game.rand(10) == 0)
                             ru.runeType = Rune.RED;
                     }
-                    this.spawnEntity(ru);
+                    //Over time, money increases exponentially, while tower costs stay linear
+                    //Slow down the money supply at later rounds
+                    if(roundNum > 5 && roundNum < 30 && LD55Game.rand(30-roundNum) == 0){
+                        System.out.println("Skipping rune spawn");
+                    }else{
+                        if(roundNum >= 30 && LD55Game.rand(10) == 0){
+                            System.out.println("Skipping rune spawn");
+                        }else{
+                            this.spawnEntity(ru);
+                        }
+
+                    }
+
                 }
             }
         }
@@ -397,7 +409,7 @@ public class Level {
     }
 
     public int getAmountToSpawn() {
-        return (int) (5 * Math.pow(5, ((roundNum / 5.0))));
+        return (int) (5 * Math.pow(5, ((roundNum / 10.0))));
     }
 
     public List<Tile> getTilesInRadius(int x, int y, float range) {
@@ -407,7 +419,7 @@ public class Level {
             for (Tile tile : t) {
                 Rectangle r = new Rectangle(tile.getX() * Tile.TILE_SIZE, tile.getY() * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
                 if (circleIntersectsRectangle(x, y, (int) range, r)) {
-                    System.out.println("Found " + tile);
+                //        System.out.println("Found " + tile);
                     result.add(tile);
                 }
             }
@@ -451,13 +463,13 @@ public class Level {
     }
 
     public long getCurrentSpawnRate() {
-        if (roundNum > 5 && roundNum <10) {
+        if (roundNum > 3 && roundNum <5) {
             return 400;
-        } else if(roundNum >= 10 && roundNum < 20){
+        } else if(roundNum >= 5 && roundNum < 10){
             return 250;
-        }else if(roundNum >= 20 && roundNum < 30){
+        }else if(roundNum >= 10 && roundNum < 20){
             return 200;
-        }else if(roundNum >= 30){
+        }else if(roundNum >= 20){
             return 100;
         }else {
             return 500;
@@ -465,6 +477,10 @@ public class Level {
     }
 
     public Tower getTowerAt(int tileX, int tileY) {
-        return towers[tileX][tileY];
+        try {
+            return towers[tileX][tileY];
+        }catch (Exception e){
+            return null;
+        }
     }
 }

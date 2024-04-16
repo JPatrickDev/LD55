@@ -70,14 +70,14 @@ public class VineTower extends Tower{
 
             if(System.currentTimeMillis() - lastShot >= fireRate){
                 parent.spawnEntity(new VineAttack(getX(),getY(),1));
-                System.out.println("Spawning Left");
+              //  System.out.println("Spawning Left");
                 lastShot = System.currentTimeMillis();
             }
         } if(right instanceof PathTile && parent.getMobAt(right) != null){
 
             if(System.currentTimeMillis() - lastShot >= fireRate){
                 parent.spawnEntity(new VineAttack(getX(),getY(),3));
-                System.out.println("Spawning right");
+               // System.out.println("Spawning right");
                 lastShot = System.currentTimeMillis();
             }
         }

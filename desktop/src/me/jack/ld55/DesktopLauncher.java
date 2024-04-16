@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(640 + 128+175 + 64,640 +128);
 		config.setForegroundFPS(60);
-		config.setTitle("LD55");
+		config.setTitle("LD55 - Overrun");
 		new Lwjgl3Application(new LD55Game(), config);
 	}
 }

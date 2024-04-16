@@ -59,7 +59,6 @@ public class RockSmashSpell extends Tower {
     @Override
     public HashMap<Rune, Integer> getPrice() {
         HashMap<Rune, Integer> map = new HashMap<>();
-        map.put(Rune.RED, 10);
         map.put(Rune.PURPLE,5);
         map.put(Rune.GREEN,5);
         return map;

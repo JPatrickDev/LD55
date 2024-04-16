@@ -62,13 +62,13 @@ public enum Rune {
             for (int xx = 0; xx != pixmap.getWidth(); xx++) {
                 for (int yy = 0; yy != pixmap.getHeight(); yy++) {
                     if (pixmap.getPixel(xx, yy) == 0xFF00DCFF) {
-                        System.out.println("Replacing colour");
+               //         System.out.println("Replacing colour");
                         pixmap.drawPixel(xx, yy, Color.rgba8888(rune.color));
                     } else if (pixmap.getPixel(xx, yy) == 0x1500FFFF) {
-                        System.out.println("Replacing highlight");
+                //        System.out.println("Replacing highlight");
                         pixmap.drawPixel(xx, yy, Color.rgba8888(rune.highlight));
                     } else if (pixmap.getPixel(xx, yy) == 0x404040FF) {
-                        System.out.println("Replacing highlight");
+                 //       System.out.println("Replacing highlight");
                         Color black = new Color(0, 0, 0, 1); // Black color
                         pixmap.drawPixel(xx, yy, Color.rgba8888(new Color(rune.highlight).lerp(black, 0.3f)));
                     }
@@ -96,13 +96,13 @@ public enum Rune {
             for (int xx = 0; xx != pixmap.getWidth(); xx++) {
                 for (int yy = 0; yy != pixmap.getHeight(); yy++) {
                     if (pixmap.getPixel(xx, yy) == 0xFF00DCFF) {
-                        System.out.println("Replacing colour");
+                 //       System.out.println("Replacing colour");
                         pixmap.drawPixel(xx, yy, Color.rgba8888(rune.color));
                     } else if (pixmap.getPixel(xx, yy) == 0x1500FFFF) {
-                        System.out.println("Replacing highlight");
+                      //  System.out.println("Replacing highlight");
                         pixmap.drawPixel(xx, yy, Color.rgba8888(rune.highlight));
                     } else if (pixmap.getPixel(xx, yy) == 0x404040FF) {
-                        System.out.println("Replacing highlight");
+                      //  System.out.println("Replacing highlight");
                         Color black = new Color(0, 0, 0, 1); // Black color
                         pixmap.drawPixel(xx, yy, Color.rgba8888(new Color(rune.highlight).lerp(black, 0.3f)));
                     }

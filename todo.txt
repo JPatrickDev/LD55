@@ -1,4 +1,4 @@
-Game over when too many mobs get through
+Game over when too many mobs get through/
 
 
 Exp
@@ -16,14 +16,14 @@ Rounds
 Next Round UI/
     - Exp gathered can be spent on existing towers, or unlocking a new card
         - Maybe the cards are auto-unlocked based on current round, so runes are just spent on cards
-Number of mobs per round increases, with some randomness added
+Number of mobs per round increases, with some randomness added/
 Every multiple of 3, a new mob type is introduced?
-    - Speed/health differences
+    - Speed/health differences/
 
 Mobs
     - Some mobs can hurt towers?
         - Passive towers can counter this?
-    - Difference sprites depending on direction they are moving/facing
+    - Difference sprites depending on direction they are moving/facing/
     - Walking animations/
 
 Tower Placement
@@ -32,13 +32,13 @@ Tower Placement
     - Show grid only when placing?/
 
 Level
-    - Randomise stone placement?
-    - At least three levels
-    - Level selection screen
-        - Render preview
+    - Randomise stone placement?/
+    - At least three levels/
+    - Level selection screen/
+        - Render preview/
 
 Cards
-    - Hovering over a card "flips" it, showing a more detailed description on the back
+    - Hovering over a card "flips" it, showing a more detailed description on the back/
     - Some cards upgrade existing towers
         -- Applies to towers already placed
     - Unwanted cards can be discarded
@@ -50,4 +50,4 @@ Towers
 
 
  Bugs:
-    - Ice tower can break movement if placed just before the final corner
+    - Ice tower can break movement if placed just before the final corner/

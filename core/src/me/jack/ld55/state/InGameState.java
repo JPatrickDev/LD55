@@ -115,7 +115,7 @@ public class InGameState extends Screen {
 
         List<Tower> finalChoices = new ArrayList<>();
         int found = 0;
-        int toFind = LD55Game.rand(3) + 1;
+        int toFind = 3;
         while(found != toFind){
             if(choices.isEmpty())
                 break;

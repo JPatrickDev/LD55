@@ -15,7 +15,7 @@ public class RuneCollectionElement extends UIElement{
     public static RuneCollectionElement instance;
     public RuneCollectionElement(int x, int y, int w, int h) {
         super(x, y, w, h);
-        fullRunes.put(Rune.RED,10);
+        fullRunes.put(Rune.RED,20);
         fullRunes.put(Rune.BLUE,0);
         runePieces.put(Rune.RED,0);
         runePieces.put(Rune.BLUE,0);
