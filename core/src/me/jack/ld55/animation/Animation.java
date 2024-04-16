@@ -62,7 +62,10 @@ public class Animation {
             }
 
         }
+
         Texture t = animation.get(state);
+        if(t == null)
+            return;
         if(rotX == -1){
             rotX = t.getWidth() / 2;
             rotY = t.getHeight() /2;

@@ -46,7 +46,7 @@ public class InGameState extends Screen {
     private UIContainer roundEndDialog = null;
     private SidebarContainer sidebar = null;
 
-    private TextAreaElement nextRoundButton = null;
+    private TextAreaElement nextRoundButton = null,purchaseCardsButton = null;
 
 
     BitmapFont font = new BitmapFont();
@@ -54,6 +54,7 @@ public class InGameState extends Screen {
     @Override
     public void show() {
         nextRoundButton = new TextAreaElement(300,600,200,40,"Start Next Round");
+        purchaseCardsButton = new TextAreaElement(300,550,200,40,"Purchase Cards");
         shapeRenderer.setAutoShapeType(true);
         sidebar = new SidebarContainer(775, 0, 175 + 25 + 32, 768);
         sidebar.setCardSelectionListener(new UIContainer.ClickListener() {
@@ -69,6 +70,7 @@ public class InGameState extends Screen {
                     if (((CardElement) clicked).getCount() <= 0) {
                         sidebar.removeCard(clicked);
                     }
+                    roundEndDialog = null;
                 } else {
 
                 }
@@ -102,7 +104,6 @@ public class InGameState extends Screen {
         }
 
         UIContainer cards = new UIContainer(128, 128, 524, 518);
-        //  cards.background = new Texture("gui/levelendbackground.png");
 
         List<Tower> choices = new ArrayList<>();
         choices.add(new VineTower(0,0));
@@ -191,7 +192,7 @@ public class InGameState extends Screen {
 
         cards.addElement(new TextAreaElement(50, 25, 150, 40, "Start Round " + (currentLevel.roundNum + 1)));
         cards.addElement(new TextAreaElement(300, 25, 150, 40, "Place Towers "));
-
+        cards.addElement(new TextAreaElement(225, 25, 50, 40, "Help"));
         roundEndDialog = cards;
     }
 
@@ -246,14 +247,23 @@ public class InGameState extends Screen {
         } else {
             if (roundEndDialog == null && currentLevel.remainingToSpawn == 0 && !currentLevel.mobsRemaining()) {
                 Rectangle r = new Rectangle(nextRoundButton.getX(), nextRoundButton.getY(), nextRoundButton.getW(), nextRoundButton.getH());
-                //font.draw(batchRenderer, "START NEXT ROUND", 300, 300);
-                //batchRenderer.draw(nextRoundButton, 300, 300);
                 nextRoundButton.draw(shapeRenderer,batchRenderer,0,0);
                 int x = Gdx.input.getX();
                 int y = Gdx.graphics.getHeight() - Gdx.input.getY();
                 if (r.contains(x, y) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                     currentLevel.startRound();
                 }
+                r = new Rectangle(purchaseCardsButton.getX(), purchaseCardsButton.getY(), purchaseCardsButton.getW(), purchaseCardsButton.getH());
+                purchaseCardsButton.draw(shapeRenderer,batchRenderer,0,0);
+                if (r.contains(x, y) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                    showRoundEndDialog();
+                }
+            }
+        }
+
+        if(roundEndDialog != null){
+            if(new Rectangle(roundEndDialog.getX() + 225, roundEndDialog.getY() + 25, 50, 40).contains(Gdx.input.getX(),Gdx.graphics.getHeight() - Gdx.input.getY())){
+                batchRenderer.draw(tutorial,0,0);
             }
         }
 
@@ -286,13 +296,16 @@ public class InGameState extends Screen {
             roundEndDialog.update();
 
         if (roundEndDialog != null && noMoreAffordableCards()) {
-            hideRoundEndDialog();
+        //    hideRoundEndDialog();
         }
+
+
     }
+
+    static Texture tutorial = new Texture("tutorial.png");
 
     @Override
     public void dispose() {
-
     }
 
 

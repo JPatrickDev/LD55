@@ -97,7 +97,7 @@ public class LevelSelectState extends Screen{
         }
         for (int i = 0; i != (w - corner.getWidth()) / vertical.getWidth(); i++) {
             finalTexture.drawPixmap(horizontal, corner.getWidth() + i * horizontal.getWidth(), 0);
-            finalTexture.drawPixmap(horizontal, corner.getWidth() + i * horizontal.getWidth(), h - vertical.getHeight());
+            finalTexture.drawPixmap(horizontal, corner.getWidth() + i * horizontal.getWidth(), h - horizontal.getHeight());
         }
 
 

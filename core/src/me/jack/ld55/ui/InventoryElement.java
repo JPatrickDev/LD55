@@ -26,7 +26,7 @@ public class InventoryElement extends UIElement{
             i++;
         }
 
-        font.draw(batch,"Rune Inventory",getX() + px + 13,getY() + py + 65);
+        font.draw(batch,"Rune Inventory",getX() + px + 13,getY() + py + 62);
     }
 
     public InventoryElement(int x, int y, int w, int h) {

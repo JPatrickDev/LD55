@@ -133,8 +133,8 @@ public class CardElement extends UIElement {
             else {
                 batch.draw(spellcardsmall, x + getX(), y + getY());
             }
-            tower.setX(x + getX() + (118 / 2) - tower.getW()/2);
-            tower.setY(y + getY() + 82 / 2 - tower.getH() / 2);
+            tower.setX(x + getX() + (118 / 2) - tower.getW()/2 + 18);
+            tower.setY(y + getY() + 82 / 2 - tower.getH() / 2 + 22);
             tower.drawImages(batch);
 
             return;

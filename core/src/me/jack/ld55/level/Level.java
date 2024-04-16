@@ -267,6 +267,9 @@ public class Level {
                         ru.runeType = Rune.RED;
                         if(LD55Game.rand(3) == 0)
                             ru.runeType = Rune.BLUE;
+                    }else{
+                        if(LD55Game.rand(10) == 0)
+                            ru.runeType = Rune.RED;
                     }
                     this.spawnEntity(ru);
                 }
@@ -450,8 +453,12 @@ public class Level {
     public long getCurrentSpawnRate() {
         if (roundNum > 5 && roundNum <10) {
             return 400;
-        } else if(roundNum >= 10){
+        } else if(roundNum >= 10 && roundNum < 20){
             return 250;
+        }else if(roundNum >= 20 && roundNum < 30){
+            return 200;
+        }else if(roundNum >= 30){
+            return 100;
         }else {
             return 500;
         }

@@ -134,6 +134,14 @@ public class UIContainer {
 
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public interface ClickListener{
         public void onClick(UIElement clicked);
         void onMouseIn(UIElement in);
