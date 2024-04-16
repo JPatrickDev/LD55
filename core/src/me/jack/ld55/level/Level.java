@@ -263,9 +263,9 @@ public class Level {
                 if (((Mob) e).getHealth() <= 0) {
                     removeEntity(e);
                     RuneShard ru = new RuneShard(e.getX(), e.getY());
-                    if (roundNum < 3) {
+                    if (roundNum < 5) {
                         ru.runeType = Rune.RED;
-                        if(LD55Game.rand(3) == 0)
+                        if(LD55Game.rand(5) == 0)
                             ru.runeType = Rune.BLUE;
                     }else{
                         if(LD55Game.rand(10) == 0)

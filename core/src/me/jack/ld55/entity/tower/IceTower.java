@@ -48,7 +48,7 @@ public class IceTower extends Tower{
     public HashMap<Rune, Integer> getPrice() {
         HashMap<Rune,Integer> map = new HashMap<>();
         map.put(Rune.BLUE,15);
-        map.put(Rune.RED,10);
+        map.put(Rune.PURPLE,20);
         return map;
     }
 
