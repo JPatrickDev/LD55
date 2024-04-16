@@ -3,6 +3,7 @@ package me.jack.ld55.entity.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import me.jack.ld55.LD55Game;
+import me.jack.ld55.animation.Animation;
 import me.jack.ld55.attack.VineAttack;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.projectile.Projectile;
@@ -19,7 +20,7 @@ public class VineTower extends Tower{
         super(x, y,TowerTypeEnum.AOE);
         range = (float) (0.75 * Tile.TILE_SIZE);
         fireRate = 2500;
-        texture = new Texture("towers/vinetower.png");
+        texture = new Animation("towers/vinetower.png");
         name = "Vine Labyrinth";
         setH(texture.getHeight());
         setW(texture.getWidth());
@@ -43,8 +44,8 @@ public class VineTower extends Tower{
     @Override
     public HashMap<Rune, Integer> getPrice() {
         HashMap<Rune,Integer> map = new HashMap<>();
-        map.put(Rune.PURPLE,3);
-        map.put(Rune.RED,2);
+        map.put(Rune.PURPLE,5);
+        map.put(Rune.RED,15);
         return map;
     }
 
@@ -80,5 +81,10 @@ public class VineTower extends Tower{
                 lastShot = System.currentTimeMillis();
             }
         }
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }

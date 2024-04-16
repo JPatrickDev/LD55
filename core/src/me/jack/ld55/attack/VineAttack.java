@@ -16,6 +16,9 @@ public class VineAttack extends Entity {
         super(x, y, 64, 128);
         this.dir = dir;
         animation = new Animation("animation/vineattack");
+        animation.fps = 1;
+        animation.rotX = 16;
+        animation.rotY = 16;
     }
 
     @Override
@@ -37,5 +40,10 @@ public class VineAttack extends Entity {
             if(m != null)
                 m.damage(50f);
         }
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }

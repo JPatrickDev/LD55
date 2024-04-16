@@ -17,6 +17,7 @@ import me.jack.ld55.entity.mob.SpiderEnemy;
 import me.jack.ld55.entity.mob.StoneGolemEnemy;
 import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.entity.rune.RuneShard;
+import me.jack.ld55.entity.tower.RockTower;
 import me.jack.ld55.entity.tower.Tower;
 import me.jack.ld55.entity.tower.TowerTypeEnum;
 import me.jack.ld55.level.tile.*;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.jack.ld55.spells.RockSmashSpell;
 import me.jack.ld55.state.InGameState;
 import me.jack.ld55.ui.RuneCollectionElement;
 import org.xguzm.pathfinding.grid.GridCell;
@@ -84,6 +86,9 @@ public class Level {
                 if (x >= 1 && x <= 10 && y >= 1 && y <= 10) {
                     if (val == 2134049023) {
                         level.tiles[x][y] = new GrassTile(x, y);
+                        if(LD55Game.rand(3) == 0){
+                            level.placeTower(new RockTower(x * Tile.TILE_SIZE,y * Tile.TILE_SIZE));
+                        }
                     } else if (val == 16720383) {
                         level.tiles[x][y] = new PathTile(x, y);
                     } else if (val == -1224802049) {
@@ -101,13 +106,13 @@ public class Level {
                         level.spawners.add(e);
                         level.entities.add(e);
                         System.out.println("Spawner at " + x + "," + y);
-                        level.tiles[x][y] = new PathTile(x, y);
+                        level.tiles[x][y] = new DirtTile(x, y);
                     } else if (val == -16776961) {
                         ExitTile e = new ExitTile((x) * Tile.TILE_SIZE, (y) * Tile.TILE_SIZE);
                         level.exits.add(e);
                         level.entities.add(e);
                         System.out.println("Exit at " + x + "," + y);
-                        level.tiles[x][y] = new PathTile(x, y);
+                        level.tiles[x][y] = new DirtTile(x, y);
                     } else {
                         if (x < 12 && y < 12) {
                             //  System.out.println(val);
@@ -165,6 +170,14 @@ public class Level {
 
 
     public boolean placeTower(Tower t) {
+        if(t instanceof RockSmashSpell){
+            if(towers[t.getTileX()][t.getTileY()] instanceof RockTower){
+                ((RockTower) towers[t.getTileX()][t.getTileY()]).isBeingDestroyed = true;
+                return true;
+            }else{
+                return false;
+            }
+        }
         try {
             if (towers[t.getX() / 64][t.getY() / 64] == null && ((tiles[t.getX() / 64][t.getY() / 64] instanceof GrassTile && t.type != TowerTypeEnum.SPELL)
                     || (tiles[t.getX() / 64][t.getY() / 64] instanceof PathTile && t.type == TowerTypeEnum.SPELL)
@@ -292,15 +305,19 @@ public class Level {
         toSpawn.add(e);
     }
 
+    public int totalKills = 0;
     List<Entity> toRemove = new ArrayList<>();
 
     public void removeEntity(Entity e) {
         toRemove.add(e);
         if (e instanceof RuneShard) {
-            RuneCollectionElement.instance.addRune(((RuneShard) e).getRuneType(), 2);
+            RuneCollectionElement.instance.addRune(((RuneShard) e).getRuneType(), 4);
         }
         if (e instanceof Tower) {
             towers[e.getTileX()][e.getTileY()] = null;
+        }
+        if(e instanceof  Mob){
+            totalKills++;
         }
     }
 
@@ -438,5 +455,9 @@ public class Level {
         }else {
             return 500;
         }
+    }
+
+    public Tower getTowerAt(int tileX, int tileY) {
+        return towers[tileX][tileY];
     }
 }

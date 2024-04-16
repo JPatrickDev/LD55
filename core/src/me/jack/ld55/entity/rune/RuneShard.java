@@ -39,7 +39,7 @@ public class RuneShard extends Entity {
     public Rune runeType = Rune.RED;
     @Override
     public void drawImages(SpriteBatch batch) {
-        Rune.renderRuneShardAt(batch,null,getX(),getY(), runeType );
+        Rune.renderMiniRuneAt(batch,null,getX(),getY(), 0,runeType );
     }
 
     long spawnTime = System.currentTimeMillis();
@@ -52,6 +52,11 @@ public class RuneShard extends Entity {
         if(System.currentTimeMillis() - spawnTime > 1000){
             parent.removeEntity(this);
         }
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     public Rune getRuneType() {

@@ -74,4 +74,6 @@ public abstract class Entity {
     public int getTileY(){
         return getY() / Tile.TILE_SIZE;
     }
+
+    public abstract void dispose();
 }

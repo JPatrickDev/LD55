@@ -34,4 +34,9 @@ public class MobSpawner extends Entity{
         }
     }
 
+    @Override
+    public void dispose() {
+
+    }
+
 }

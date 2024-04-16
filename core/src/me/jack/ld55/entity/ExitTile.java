@@ -37,4 +37,9 @@ public class ExitTile extends Entity{
             parent.livesRemaining--;
         }
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

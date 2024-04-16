@@ -20,6 +20,11 @@ public class SnakeEnemy extends BaseEnemy {
     }
 
     @Override
+    public void dispose() {
+
+    }
+
+    @Override
     public float getMaxHealth() {
         return 10f;
     }

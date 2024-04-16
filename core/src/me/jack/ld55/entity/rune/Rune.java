@@ -49,7 +49,7 @@ public enum Rune {
             runeCache.put( "runes/minirune.png" + rune.name(),toDraw);
         }
         batch.draw(toDraw,x,y);
-   //     if(amount > 1)
+        if(amount > 0)
         font.draw(batch,"x" + amount,x ,y - 5);
     }
 

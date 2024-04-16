@@ -1,6 +1,7 @@
 package me.jack.ld55.entity.tower;
 
 import com.badlogic.gdx.graphics.Texture;
+import me.jack.ld55.animation.Animation;
 import me.jack.ld55.entity.rune.Rune;
 import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.PathTile;
@@ -17,7 +18,7 @@ public class IceTower extends Tower{
         super(x, y,TowerTypeEnum.PASSIVE);
         range = (float) (1.5 * Tile.TILE_SIZE);
         fireRate = 0;
-        texture = new Texture("towers/icepillar.png");
+        texture = new Animation("towers/icepillar.png");
         name = "Ice Pillar";
         setH(texture.getHeight());
         setW(texture.getWidth());
@@ -40,7 +41,7 @@ public class IceTower extends Tower{
 
     @Override
     public String getDescription() {
-        return "An Icy Monument that freezes the path around it, slowing down enemys.";
+        return "An Icy Monument that freezes the path around it, slowing down enemies.";
     }
 
     @Override
@@ -49,5 +50,10 @@ public class IceTower extends Tower{
         map.put(Rune.BLUE,15);
         map.put(Rune.RED,10);
         return map;
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }

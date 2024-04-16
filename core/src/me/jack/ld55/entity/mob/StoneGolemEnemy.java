@@ -19,6 +19,11 @@ public class StoneGolemEnemy extends BaseEnemy {
         animation.draw(batch,getX() + 16,getY() + 16,this.rotation);
     }
 
+    @Override
+    public void dispose() {
+
+    }
+
 
     @Override
     public float getMaxHealth() {

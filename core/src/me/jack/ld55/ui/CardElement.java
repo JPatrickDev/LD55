@@ -81,7 +81,7 @@ public class CardElement extends UIElement {
         if (input == 0)
             return 0;
         int size = max / 6;
-        return (int) Math.ceil(new Double((input)) / new Double(size));
+        return (int) Math.ceil((double) input / (double) size);
     }
 
     public boolean inCarouselMode = false;
@@ -133,8 +133,8 @@ public class CardElement extends UIElement {
             else {
                 batch.draw(spellcardsmall, x + getX(), y + getY());
             }
-            tower.setX(x + getX() + (118 / 2));
-            tower.setY(y + getY() + 86 / 2 - tower.getH() / 2);
+            tower.setX(x + getX() + (118 / 2) - tower.getW()/2);
+            tower.setY(y + getY() + 82 / 2 - tower.getH() / 2);
             tower.drawImages(batch);
 
             return;

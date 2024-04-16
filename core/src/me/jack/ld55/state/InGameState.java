@@ -17,6 +17,7 @@ import me.jack.ld55.level.Level;
 import me.jack.ld55.level.tile.GrassTile;
 import me.jack.ld55.level.tile.PathTile;
 import me.jack.ld55.level.tile.Tile;
+import me.jack.ld55.spells.RockSmashSpell;
 import me.jack.ld55.spells.SpikeStripSpell;
 import me.jack.ld55.ui.*;
 
@@ -108,6 +109,7 @@ public class InGameState extends Screen {
         choices.add(new WizardsTower(0,0));
         choices.add(new IceTower(0,0));
         choices.add(new SpikeStripSpell(0,0));
+        choices.add(new RockSmashSpell(0,0));
         choices = choices.stream().filter(RuneCollectionElement::canAfford).collect(Collectors.toList());
 
         List<Tower> finalChoices = new ArrayList<>();
@@ -139,6 +141,10 @@ public class InGameState extends Screen {
             @Override
             public void onClick(UIElement clicked) {
                 if (clicked instanceof CardElement) {
+                    if(((CardElement) clicked).getCount() <= 0){
+                        System.out.println("Clicked on empty");
+                        return;
+                    }
                     CardElement e = new CardElement(0, 0, 150, 300, ((CardElement) clicked).getTower().clone());
                     e.setCount(1);
                     e.cost = new HashMap<>();
@@ -257,7 +263,9 @@ public class InGameState extends Screen {
 
     public void update() {
         if (currentLevel.livesRemaining <= 0) {
-            //Game over
+            this.dispose();
+            LD55Game.currentScreen = new GameOverScreen(currentLevel.roundNum, currentLevel.totalKills);
+            LD55Game.currentScreen.show();
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && inHand != null) {
             int x = Gdx.input.getX();

@@ -1,6 +1,7 @@
 package me.jack.ld55.spells;
 
 import com.badlogic.gdx.graphics.Texture;
+import me.jack.ld55.animation.Animation;
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.rune.Rune;
@@ -26,7 +27,7 @@ public class SpikeStripSpell extends Tower {
 
         }
         this.damage = 30;
-        this.texture = texMap.get((int)health);
+        this.texture = new Animation(texMap.get((int)health));
         this.name = "Thorny Vines";
     }
 
@@ -49,12 +50,17 @@ public class SpikeStripSpell extends Tower {
             ((Mob) with).damage(5f);
             if(System.currentTimeMillis() - lastDamage >= 500) {
                 health-=0.5f;
-                this.texture = texMap.get((int)health);
+                this.texture = new Animation(texMap.get((int)health));
                 lastDamage = System.currentTimeMillis();
             }
         }
         if(health <= 0)
             parent.removeEntity(this);
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     @Override

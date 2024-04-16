@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
+import me.jack.ld55.animation.Animation;
 import me.jack.ld55.entity.Entity;
 import me.jack.ld55.entity.mob.Mob;
 import me.jack.ld55.entity.projectile.Projectile;
@@ -23,7 +24,8 @@ public abstract class Tower extends Entity {
     public float range;
     public long fireRate;
 
-    protected Texture texture;
+
+    public Animation texture;
 
     private Projectile weapon;
 
@@ -62,7 +64,7 @@ public abstract class Tower extends Entity {
     @Override
     public void drawImages(SpriteBatch batch) {
         if (texture != null)
-            batch.draw(texture, getX(), getY());
+            texture.draw(batch,getX(),getY(),0);
     }
 
     long lastShot = 0;
